@@ -1,21 +1,30 @@
 function loadEvents()
 {
 					
-	var index = Number(localStorage.getItem("index"));
+	var index = Number(sessionStorage.getItem("index"));
 	for(i = 0; i < index; i++)
 	{
-		t = localStorage.getItem(i);
+		t = sessionStorage.getItem(i);
 		obj = JSON.parse(t);
-		document.getElementById("eventTableBody").innerHTML += 	
-															"<tr><td>" + obj.Name + "</td>" +
-															"<td>" + obj.Desc + "</td>" +
-															"<td>" + obj.Time + "</td></tr>";
+		createRow(obj);
 	}
-	
-	document.getElementById("testField").innerHTML = "Index value: " + localStorage.getItem("index");
+	document.getElementById("testField").innerHTML = "Index value: " + sessionStorage.getItem("index");
 }
 
-function getEvent(i)
+function createRow(eventObj)
 {
-	
+	document.getElementById("eventTableBody").innerHTML +=
+		"<tr>"+
+			"<td>" +  "<button class='editEventButton'>" + "</td>" +
+			"<td>" + eventObj.Name  + "</td>" +
+			"<td>" + eventObj.Desc  + "</td>" +
+			"<td>" + eventObj.Time  + "</td>" +
+			"<td>" + eventObj.When  + "</td>" +
+		"</tr>";
+}
+
+function clearAllEvents()
+{
+	sessionStorage.clear();
+	document.getElementById("eventTableBody").innerHTML = "";
 }

@@ -13,13 +13,14 @@
 			}
 		</style>
 	</head>
-	<body>
+	<body onload="initIndex(), initForm()">
 	<h1> Add Event </h1>
 	<form name="eventForm" onsubmit="return addEventFromHTML()" method="post">
 	<table>
 		<tr><td>Name: </td>			<td><input type="text" name="eventName"></td> </tr>
 		<tr><td>Description: </td>	<td><textarea type="text" name="eventDesc"></textarea></td></tr> 
 		<tr><td>Time: </td>			<td><input type="date" name="eventTime"></td> </tr>
+		<tr><td>When?: </td>		<td><input type="text" name="eventWhen"></td> </tr>
 	</table>
 	<input type="submit" value"Add Event">
 	</form>
