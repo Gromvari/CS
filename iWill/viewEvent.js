@@ -1,3 +1,4 @@
+// IS NOW DEFUNCT -> eventManager.js
 function loadEvents()
 {
 					

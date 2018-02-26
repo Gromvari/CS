@@ -9,7 +9,7 @@ function globalClock(){
 	
 	document.getElementById("globalClock").innerHTML =
 	h + ":" + m + ":" + s;
-	var t = setTimeout(globalClock, 500);
+	var t = setTimeout(globalClock, 1000);
 }
 function checkTime(i) {
 	if(i < 10) {i = "0" + i};

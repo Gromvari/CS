@@ -1,4 +1,4 @@
-// note to self: might have an issue with seesionStorage on public computers
+//IS NOW DEFUNCT -> eventManager.js
 function addEventParam(eName, eDesc, eTime, eWhen)
 {
 	var eventObj = {
