@@ -1,23 +1,24 @@
 function loadEvents()
 {
-	testAlert();
 	var index = Number(sessionStorage.getItem("index"));
 	for(i = 0; i < index; i++)
 	{
+		
 		t = sessionStorage.getItem(i);
 		obj = JSON.parse(t);
+		if(isEmpty(obj))
+			continue;
 		createRow(obj);
 	}
-	document.getElementById("testField").innerHTML = "Index value: " + sessionStorage.getItem("index");
 }
-function testAlert()
+function testAlert(eventObj)
 {
 	testSound();
-	alert("Test Alert!!! yay?");
+	alert(eventObj.Name);
 }
 function testSound()
 {
-	var snd = new Audio("alertPing.mp3");
+	var snd = new Audio("_Sounds/alertPing.mp3");
 	snd.play();
 }
 function createRow(eventObj)
@@ -64,7 +65,7 @@ function addEventParam(eName, eDesc, eTime, eWhen)
 		sessionStorage.setItem("index", "1");
 		alert("Things were submitted" + eName + eDesc + eTime + eWhen);
 	}
-	testAlert();
+	
 	// sessionStorage.setItem("test", eventJSON);
 		// alert("Things were submitted" + eName + eDesc + eTime);
 }
@@ -119,17 +120,50 @@ function initForm()
 
 function eventDriver()
 {
-	var today = new Date();
-	var h = today.getHours();
-	var m = today.getMinutes();
-	var s = today.getSeconds();
 	var index = Number(sessionStorage.getItem("index"));
 	for(i = 0; i < index; i++)
 	{
 		t = sessionStorage.getItem(i);
 		obj = JSON.parse(t);
-		
-		//check for time match
+		if(isEmpty(obj))			// Temporary fix
+		{
+			continue;
+		}
+		var colon = obj.When.indexOf(":");
+		var h = obj.When.slice(0, colon);
+		var m = obj.When.substring(colon + 1);
+		if(compareEvent( h,m))
+		{
+			testAlert(obj);
+			deleteEvent(i);
+		}			
 	}
+	var eDrive = setTimeout(eventDriver, 1000);
 }
 
+function compareEvent( hour, minute)
+{
+	var today = new Date();
+	// var y = today.getFullYear();    implament later
+	// var j = today.getMonth();
+	// var d = today.getDay();
+	var h = today.getHours();
+	var m = today.getMinutes();
+	// if((y == year) && (j == month) && (d == day) && (h == hour) && (m == minute))
+	if((h == hour) && (m == minute))
+		return true;
+	return false;
+}
+
+function deleteEvent(i)
+{
+	sessionStorage.removeItem(i);
+}
+
+function isEmpty(obj) {
+    for(var key in obj) {
+        if(obj.hasOwnProperty(key))
+            return false;
+    }
+    return true;
+}

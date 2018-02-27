@@ -1,3 +1,5 @@
+
+
 body {
     background-color: gray;
 }
@@ -7,7 +9,6 @@ a{
 a:visited {
 	color: black;
 }
-
 a:hover {
 	color: red;
 }
@@ -37,22 +38,27 @@ button.editEventButton {
 	border: 3px solid black;
 }
 
-#viewChoiceBar {
+.viewChoiceBar {
 	position: absolute;
 	background-color: DarkBlue;
-	top: 200px;
+	top: 10%;
 	width: 15%;
 	height: 100%;
 	left: 0;
 }
 
 .banner {
-	position: fixed;
+	position: absolute;
 	top: 0;
 	left: 0;
 	right: 0;
 	width: 100%;
 	height: 10%;
 	background-color: white;
-	z-index: 10;
+}
+
+.body {
+	position: absolute;
+	top: 10%;
+	left: 15%;
 }
