@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="standard.css">
+		<script src="global.js"></script>
+		<script src="temp.js"></script>
+		<style>
+			#body {
+				position: absolute;
+				left: 15%;
+				top: 10%;
+			}
+			.alertPopupON {
+				position: fixed;
+				bottom: 0;
+				right: 0;
+				width: 200px;
+				height: 200px;
+				background-color: Red;
+			}
+			.hideThisShit {
+				visibility: hidden;
+				width: 0;
+				height: 0;
+			}
+		</style>
+	</head>
+	
+	<body onload="globalClock()">
+	
+		<div class="banner">
+			<h1>JS Testing Environment</h1>
+			<div id="globalClock"></div>
+		</div>
+		<div id="viewChoiceBar">
+			
+		</div>
+		<div id="body">
+			<p id="eventText">  </p>
+			<div id="alertPopup"> </div>
+			<button onclick="eventAlert = eventAlertStandard( standardEvent )"> Standard Alert </button>
+
+		</div>
+	
+	</body>
+</html>
