@@ -2,7 +2,10 @@ var standardEvent = {
 	Name: 			'Standard Event',
 	Description: 	'A pre-created event for demonstation purposes only.',
 	Time: 			new Date(),
-	AlertType:		'Standard'
+	When:			'Unknown',
+	AlertType:		'Standard',
+	EventType:		'Standard Event',
+	Status:			'Active'
 }
 var sound;
 
@@ -53,7 +56,7 @@ function addEventFromHTML()
 	if(eName == "" || eDesc == "" || eTime == "" || eWhen == "")
 	{
 		alert ("Something was left empty. JS Testing Environment has submitted a Standard Event");
-		addEventParam("Standard Event", "standard stuff", "?time?", "?time?");
+		putStore(standardEvent);
 	}
 	else
 	{
@@ -69,8 +72,7 @@ function addEventParam(eName, eDesc, eTime, eWhen)
 		Time: eTime,
 		When: eWhen
 	};
-	putStore(eventObj);
-	
+	putStore(eventObj);	
 }
 
 function clearAllEvents()
@@ -82,10 +84,35 @@ function putStore(obj)
 {
 	if(sessionStorage.getItem("STORE") == null){
 		var s = new Array();
-		sessionStorage.setItem("STORE", JSON.stringify(s));
+		updateSTORE(s);
 	}
-	var s = JSON.parse(sessionStorage.getItem("STORE"));
+	var s = retriveSTORE()
 	obj.ID = s.length;
 	s.push(obj);
+	updateSTORE(s);
+}
+function deleteStorage(id)
+{
+	var s = retriveSTORE()
+	for (i = 0; i < s.length; i++)
+	{
+		if ( s[i].ID == id)
+		{
+			
+			alert("An event has been removed " + s[i].ID);
+			s.splice(i, 1);
+			break;
+		}
+	}
+	updateSTORE(s);
+}
+
+function retriveSTORE()
+{
+	return JSON.parse(sessionStorage.getItem("STORE"));
+}
+
+function updateSTORE( s )
+{
 	sessionStorage.setItem("STORE", JSON.stringify(s));
 }
