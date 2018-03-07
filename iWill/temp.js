@@ -69,20 +69,8 @@ function addEventParam(eName, eDesc, eTime, eWhen)
 		Time: eTime,
 		When: eWhen
 	};
-	eventJSON = JSON.stringify(eventObj);
-	alert(eventJSON);		//TESTING
-	if(sessionStorage.getItem("index") != null)
-	{
-		var i = Number(sessionStorage.getItem("index"));
-		sessionStorage.setItem(i, eventJSON);
-		sessionStorage.setItem("index", i + 1);
-		
-	}
-	else
-	{
-		sessionStorage.setItem("0", eventJSON);
-		sessionStorage.setItem("index", "1");
-	}
+	putStore(eventObj);
+	
 }
 
 function clearAllEvents()
@@ -90,8 +78,14 @@ function clearAllEvents()
 	sessionStorage.clear();
 	document.getElementById("eventTableBody").innerHTML = "";
 }
-
-function deleteEventIndex(eventID)
+function putStore(obj)
 {
-	sessionStorage.removeItem(eventID);
+	if(sessionStorage.getItem("STORE") == null){
+		var s = new Array();
+		sessionStorage.setItem("STORE", JSON.stringify(s));
+	}
+	var s = JSON.parse(sessionStorage.getItem("STORE"));
+	obj.ID = s.length;
+	s.push(obj);
+	sessionStorage.setItem("STORE", JSON.stringify(s));
 }

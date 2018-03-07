@@ -14,6 +14,9 @@ function loadAddEventDemo()
 	"</form>";	
 	
 	body.innerHTML += "<p id='eventText'></p><div id='alertPopup'></div>";		//alert functionality
+	
+	//test for STORE
+	body.innerHTML += "<p>" + sessionStorage.getItem("STORE") + "</p>";
 }
 
 function loadViewEventDemo()
@@ -28,6 +31,7 @@ function loadViewEventDemo()
 		"<th>Description</th>"+
 		"<th>Date</th>"+
 		"<th>When</th>"+
+		"<th>ID</th>"+
 		"</thead>"+
 		"<tbody id='eventTableBody'>"+
 		
@@ -53,6 +57,7 @@ function loadDeleteEventDemo()
 		"<th>Description</th>"+
 		"<th>Date</th>"+
 		"<th>When</th>"+
+		"<th>ID</th>"+
 		"</thead>"+
 		"<tbody id='eventTableBody'>"+
 		
@@ -65,17 +70,25 @@ function loadDeleteEventDemo()
 	body.innerHTML += "<p id='eventText'></p><div id='alertPopup'></div>";		//alert functionality
 }
 
+// function loadEvents()
+// {
+		// var index = Number(sessionStorage.getItem("index"));
+		// for(i = 0; i < index; i++)
+		// {
+			// t = sessionStorage.getItem(i);
+			// obj = JSON.parse(t);
+			// createRow(obj, i);
+		// }
+// }
 function loadEvents()
+{
+	var s = JSON.parse(sessionStorage.getItem("STORE"));
+	var i = 0; 
+	for ( i; i < s.length; i++)
 	{
-		var index = Number(sessionStorage.getItem("index"));
-		for(i = 0; i < index; i++)
-		{
-			t = sessionStorage.getItem(i);
-			obj = JSON.parse(t);
-			createRow(obj, i);
-		}
+		createRow( s[i], i);
 	}
-
+}
 	function createRow(eventObj, i)
 	{
 		document.getElementById("eventTableBody").innerHTML +=
@@ -85,5 +98,6 @@ function loadEvents()
 				"<td>" + eventObj.Desc  + "</td>" +
 				"<td>" + eventObj.Time  + "</td>" +
 				"<td>" + eventObj.When  + "</td>" +
+				"<td>" + eventObj.ID + "</td>" +
 			"</tr>";
 	}
