@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="standard.css">
+		<script src="global.js"></script>
+		<script src="temp.js"></script>
+		<script src="viewManager.js"></script>
+		<style>
+			#body {
+				position: absolute;
+				left: 15%;
+				top: 10%;
+			}
+			.alertPopupON {
+				position: fixed;
+				bottom: 0;
+				right: 0;
+				width: 200px;
+				height: 200px;
+				background-color: Red;
+			}
+			.hideThisShit {
+				visibility: hidden;
+				width: 0;
+				height: 0;
+			}
+		</style>
+	</head>
+	
+	<body onload="globalClock(), eventDriver()">
+	
+		<div class="banner">
+			<h1>JS Testing Environment</h1>
+			<div id="globalClock"></div>
+		</div>
+		<div id="viewChoiceBar">
+			<button class="demoButton" onclick="eventAlert = eventAlertStandard( standardEvent )"> Standard Alert </button>  <br>
+			<button class="demoButton" onclick="loadAddEventDemo()">Add Event</button>	
+			<button class="demoButton" onclick="loadEventDemo('view')">View Events</button> <br>
+			<button class="demoButton" onclick="loadEventDemo('delete')">Delete Event</button> 
+			<button class="demoButton" onclick="loadEventDemo('modify')">Modify Event</button> <br>
+			<button class="demoButton" onclick="loadAdvancedAddEventDemo()">Advanced Add</button>
+		</div>
+		<div id="body">
+		
+		
+			<p id="eventText"></p>
+			<div id="alertPopup"></div>
+
+		</div>
+	
+	</body>
+</html>
