@@ -70,8 +70,28 @@ button.editEventButton {
 }
 
 .addField {
-	width: 300px;
+	width: 500px;
 }
 .demoButton {
 	width: 100px;
+}
+.TimeField {
+	background-color: Gray;
+}
+.char2 {
+	width: 2em;
+	text-align: center;
+}
+.char4 {
+	width: 4em;
+	text-align: center;
+}
+
+
+table {
+	width: 700px;
+}
+
+input {
+	border-style: hidden;
 }

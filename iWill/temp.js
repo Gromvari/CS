@@ -11,7 +11,8 @@ var standardEvent = {
 }
 var sound;
 //}
-
+ 
+ 
 //{		ALERT CLASS to be created separate
 function eventAlert(eventObj)
 {
@@ -111,21 +112,74 @@ function deleteStorage(id)
 	updateSTORE(s);
 }
 
-function eventDriver()
+// function eventDriver()
+// {
+	// var today = new Date();
+	// var h = today.getHours();
+	// var m = today.getMinutes();
+	// // var s = today.getSeconds();
+	// var s = retriveSTORE();
+	// for(i = 0; i < s.length; i++)
+	// {
+		// if(s[i].Time.getHours() == h && s[i].Time.getMinutes() == m)
+			// alert("we got a match");
+		// //check for time match
+	// }
+	// setTimeout(eventDriver, 1000);
+// }
+
+function createReminder ( name, desc, date, alert, pri, stat)
 {
-	var today = new Date();
-	var h = today.getHours();
-	var m = today.getMinutes();
-	// var s = today.getSeconds();
-	var s = retriveSTORE();
-	for(i = 0; i < s.length; i++)
+	
+	var eventObj = {
+		e_name: 		name,
+		e_date: 		date,
+		e_alert:		alert,
+		e_priority:		pri,
+		e_stat:			"Active",
+		e_type:			"Reminder"
+		
+	};
+	if(desc != "")
 	{
-		if(s[i].Time.getHours() == h && s[i].Time.getMinutes() == m)
-			alert("we got a match");
-		//check for time match
+		eventObj.e_desc = desc;
 	}
-	setTimeout(eventDriver, 1000);
+	putStore( eventObj );
 }
+
+function addReminderFromHTML()
+{
+	var name 		= document.forms["eventForm"]["eventName"].value;
+	var desc 		= document.forms["eventForm"]["eventDesc"].value;
+	var dateMonth 	= document.forms["eventForm"]["eventDateMonth"].value;
+	var dateDay 	= document.forms["eventForm"]["eventDateDay"].value;
+	var dateYear 	= document.forms["eventForm"]["eventDateYear"].value;
+	var dateHour 	= document.forms["eventForm"]["eventDateHour"].value;
+	var dateMinute 	= document.forms["eventForm"]["eventDateMinute"].value;
+	var datePeriod 	= document.forms["eventForm"]["eventDatePeriod"].value;
+	var alert 		= document.forms["eventForm"]["eventAlert"].value;
+	//var rec 		= document.forms["eventForm"]["eventRec"].value;
+	var pri 		= document.forms["eventForm"]["eventPriority"].value;
+	
+	if(datePeriod == "PM")
+		dateHour = dateHour + 12;
+	
+	var date = new Date(dateYear, dateMonth, dateDay, dateHour, dateMinute, 0, 0);
+	
+	createReminder(name, desc, date, alert, pri, "Active"); 
+}
+
+
+
+
+function addHistory( eventObj, date, log )
+{
+	
+	
+}
+
+
+
 
 
 //{ 	SHORTCUT TO STORE/LOAD
@@ -136,6 +190,7 @@ function retriveSTORE()
 
 function updateSTORE( s )
 {
+	alert( JSON.stringify(s));
 	sessionStorage.setItem("STORE", JSON.stringify(s));
 }
 //}

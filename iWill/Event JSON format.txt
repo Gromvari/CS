@@ -1,0 +1,7 @@
+Name: 			Must have a name for event
+Description`: 		optional description of event 
+Event Type: 		REMINDER
+Time[]:			Times to trigger alert
+Alert Type:		which alert to use
+priority		for point values
+history?
