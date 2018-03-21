@@ -7,7 +7,7 @@ function loadEvents()
 		t = sessionStorage.getItem(i);
 		obj = JSON.parse(t);
 		if(isEmpty(obj))
-			continue;
+			continue; 
 		createRow(obj);
 	}
 }
