@@ -33,6 +33,11 @@ function clearEventAlert() // stop the alert
 	sound.pause();
 	aPop.innerHTML = "";
 	aPop.setAttribute('class', 'hideThisShit');
+	
+	var a = JSON.parse(sessionStorage.getItem("ALERT"));
+	var eventObj = a.pop();
+	eventObj.e_stat = "PROCESSED";
+	
 }
 
 function eventDriver()
@@ -42,7 +47,8 @@ function eventDriver()
 	
 	for(i = 0; i < s.length ; i++)
 	{
-		if( s[i].e_status == "Active")
+		//alert(s[i].e_stat);
+		if( s[i].e_stat == "Active")
 		{
 			var currDate = new Date();
 			var date = new Date(s[i].e_date);
@@ -52,15 +58,12 @@ function eventDriver()
 				currDate.getHours()		== date.getHours() &&
 				currDate.getMinutes()	== date.getMinutes() )
 			{
-				//
 				pushAlert( i );
 			}
 		}
 	}
 	
-	
-	
-	var t = setTimeout(eventDriver, 1000);
+	setTimeout(eventDriver, 2000);
 }
 
 function alertDriver()
