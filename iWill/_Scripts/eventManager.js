@@ -1,169 +1,86 @@
-function loadEvents()
-{
-	var index = Number(sessionStorage.getItem("index"));
-	for(i = 0; i < index; i++)
-	{
-		
-		t = sessionStorage.getItem(i);
-		obj = JSON.parse(t);
-		if(isEmpty(obj))
-			continue;
-		createRow(obj);
-	}
-}
-function testAlert(eventObj)
-{
-	testSound();
-	alert(eventObj.Name);
-}
-function testSound()
-{
-	var snd = new Audio("_Sounds/alertPing.mp3");
-	snd.play();
-}
-function createRow(eventObj)
-{
-	document.getElementById("eventTableBody").innerHTML +=
-		"<tr>"+
-			"<td>" +  "<button class='editEventButton'>" + "</td>" +
-			"<td>" + eventObj.Name  + "</td>" +
-			"<td>" + eventObj.Desc  + "</td>" +
-			"<td>" + eventObj.Time  + "</td>" +
-			"<td>" + eventObj.When  + "</td>" +
-		"</tr>";
-}
-
 function clearAllEvents()
 {
 	sessionStorage.clear();
 	document.getElementById("eventTableBody").innerHTML = "";
 }
-
-// note to self: might have an issue with seesionStorage on public computers
-function addEventParam(eName, eDesc, eTime, eWhen)
+function putStore(obj)
 {
-	var eventObj = {
-		Name: eName,
-		Desc: eDesc,
-		Time: eTime,
-		When: eWhen
-	};
-	eventJSON = JSON.stringify(eventObj);
-	
-	if(sessionStorage.getItem("index") != null)
-	{
-		var i = Number(sessionStorage.getItem("index"));
-		sessionStorage.setItem(i, eventJSON);
-		sessionStorage.setItem("index", i + 1);
-		alert("Things were submitted" + eName + eDesc + eTime + eWhen +"\n" + " index: " + (i + 1));
-		
+	if(sessionStorage.getItem("STORE") == null){
+		var s = new Array();
+		updateSTORE(s);
 	}
-	else
-	{
-		sessionStorage.setItem("index","0");
-		sessionStorage.setItem("0", eventJSON);
-		sessionStorage.setItem("index", "1");
-		alert("Things were submitted" + eName + eDesc + eTime + eWhen);
-	}
-	
-	// sessionStorage.setItem("test", eventJSON);
-		// alert("Things were submitted" + eName + eDesc + eTime);
+	var s = retriveSTORE()
+	obj.e_id = s.length;
+	s.push(obj);
+	updateSTORE(s);
 }
-
-function addEventFromHTML()
+function removeStore(id)
 {
-	var eName = document.forms["eventForm"]["eventName"].value;
-	var eDesc = document.forms["eventForm"]["eventDesc"].value;
-	var eTime = document.forms["eventForm"]["eventTime"].value;
-	var eWhen = document.forms["eventForm"]["eventWhen"].value;
-	if(eName == "") {
-		// alert("Name must be filled out");
-		// return false; 
-		addEventParam("A Standard Event", "With a standard description", "01-01-2012", eWhen);
-	}
-	else if(eDesc == ""){
-		// alert("Desc must be filled out");
-		// return false;
-		addEventParam("A Standard Event", "With a standard description", "01-01-2012", eWhen);
-	}
-	else if(eTime == ""){
-		// alert("Time must be filled out");
-		// return false;
-		addEventParam("A Standard Event", "With a standard description", "01-01-2012", eWhen);
-	}
-	else
+	var s = retriveSTORE()
+	for (i = 0; i < s.length; i++)
 	{
-		addEventParam(eName, eDesc, eTime, eWhen);
-	}
-}
-
-function initIndex()
-{
-	if(sessionStorage.getItem("index") != null)
-	{
-		// alert("the index is set: " + sessionStorage.getItem("index"));
-	}
-	else
-	{
-		sessionStorage.setItem("index", "0");
-		// alert("index initialized");
-	}
-}
-function initForm()
-{
-	var today = new Date();
-	var h = today.getHours();
-	var m = today.getMinutes();
-	if(m < 10){ m = "0" + m;}
-	document.forms["eventForm"]["eventWhen"].value = h +":"+ m;
-}
-
-function eventDriver()
-{
-	var index = Number(sessionStorage.getItem("index"));
-	for(i = 0; i < index; i++)
-	{
-		t = sessionStorage.getItem(i);
-		obj = JSON.parse(t);
-		if(isEmpty(obj))			// Temporary fix
+		if ( s[i].ID == id)
 		{
-			continue;
+			
+			alert("An event has been removed " + s[i].ID);
+			s.splice(i, 1);
+			break;
 		}
-		var colon = obj.When.indexOf(":");
-		var h = obj.When.slice(0, colon);
-		var m = obj.When.substring(colon + 1);
-		if(compareEvent( h,m))
-		{
-			testAlert(obj);
-			deleteEvent(i);
-		}			
 	}
-	var eDrive = setTimeout(eventDriver, 1000);
+	updateSTORE(s);
 }
 
-function compareEvent( hour, minute)
+
+function createReminder ( name, desc, date, alert, pri, stat)
 {
-	var today = new Date();
-	// var y = today.getFullYear();    implament later
-	// var j = today.getMonth();
-	// var d = today.getDay();
-	var h = today.getHours();
-	var m = today.getMinutes();
-	// if((y == year) && (j == month) && (d == day) && (h == hour) && (m == minute))
-	if((h == hour) && (m == minute))
-		return true;
-	return false;
+	
+	var eventObj = {
+		e_name: 		name,
+		e_desc:			desc,
+		e_date: 		date,
+		e_alert:		alert,
+		e_priority:		pri,
+		e_stat:			"Active",
+		e_type:			"Reminder",
+		e_value:		0
+		
+	};
+
+	putStore( eventObj );
 }
 
-function deleteEvent(i)
+function addReminderFromHTML()
 {
-	sessionStorage.removeItem(i);
+	var name 		= document.forms["eventForm"]["eventName"].value;
+	var desc 		= document.forms["eventForm"]["eventDesc"].value;
+	var dateMonth 	= document.forms["eventForm"]["eventDateMonth"].value;
+	var dateDay 	= document.forms["eventForm"]["eventDateDay"].value;
+	var dateYear 	= document.forms["eventForm"]["eventDateYear"].value;
+	var dateHour 	= document.forms["eventForm"]["eventDateHour"].value;
+	var dateMinute 	= document.forms["eventForm"]["eventDateMinute"].value;
+	var datePeriod 	= document.forms["eventForm"]["eventDatePeriod"].value;
+	var alert 		= document.forms["eventForm"]["eventAlert"].value;
+	//var rec 		= document.forms["eventForm"]["eventRec"].value;
+	var pri 		= document.forms["eventForm"]["eventPriority"].value;
+	
+
+	
+	if(datePeriod == "PM")
+		dateHour = dateHour + 12;
+	
+	var date = new Date(dateYear, dateMonth, dateDay, dateHour, dateMinute, 0, 0);
+	
+	createReminder(name, desc, date, alert, pri, "Active"); 
 }
 
-function isEmpty(obj) {
-    for(var key in obj) {
-        if(obj.hasOwnProperty(key))
-            return false;
-    }
-    return true;
+//{ 	SHORTCUT TO STORE/LOAD
+function retriveSTORE()
+{
+	return JSON.parse(sessionStorage.getItem("STORE"));
 }
+
+function updateSTORE( s )
+{
+	sessionStorage.setItem("STORE", JSON.stringify(s));
+}
+//}
