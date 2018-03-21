@@ -2,8 +2,7 @@
 <html>
 	<head>
 		<link rel="stylesheet" type="text/css" href="standard.css">
-		<script src="_Scripts/global.js"></script>
-		<script src="_Scripts/eventManager.js"></script>
+		<script src="global.js"></script>
 	</head>
 	<body onload="globalClock()">
 	
@@ -11,13 +10,11 @@
 			<h1>iWill</h1>
 			<div id="globalClock"></div>
 		</div>
-		<div class="viewChoiceBar">
+		<div id="viewChoiceBar">
 			<h2><a href="eventView.html">List of Events</a></h2>
 			<h2><a href="eventAdd.html">Add Event</a></h2>
 			<h2><a href="ana.html">Analytic</a></h2>
 			<h2><a href="import.html">Importing</a></h2>
-			<!-- Just incase shit goes upside down  -->
-			<input type="button" value="Doom Button" onclick="clearAllEvents()"> 
 		</div>
 	
 	</body>
