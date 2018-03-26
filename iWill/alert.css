@@ -1,0 +1,13 @@
+.alertPopupON {
+	position: fixed;
+	bottom: 0;
+	right: 0;
+	th: 200px;
+	height: 200px;
+	background-color: Green;
+}
+.hidden {
+	visibility: hidden;
+	width: 0;
+	height: 0;
+}
