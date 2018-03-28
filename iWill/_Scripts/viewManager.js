@@ -31,9 +31,7 @@ function loadAddReminder()
 		currHour = currHour - 12;
 	}
 	else
-	{
 		currPeriod = "AM";
-	}
 	
 	body.innerHTML =
 		"<h1>Create a Reminder</h1>" +
@@ -119,7 +117,8 @@ function loadEvents()
 	for (i = 0; i < s.length; i++)
 	{
 		var date = new Date(s[i].e_date);
-		
+		//var his = JSON.parse(s[i].e_history);
+	
 		b.innerHTML += 
 			"<tr>" +
 				"<td>" + s[i].e_name + "</td>" +
@@ -130,7 +129,7 @@ function loadEvents()
 				"<td>" + s[i].e_priority + "</td>" +
 				"<td>" + s[i].e_stat + "</td>" +
 				"<td>" + s[i].e_type + "</td>" +
-				"<td>" + "{}" + "</td>" +
+				"<td>" + getHistoryString(s[i].e_history[0]) + "</td>" + // loop through history object later
 				"<td>" + s[i].e_value + "</td>" +
 			"</tr>";
 	}
@@ -158,5 +157,11 @@ function getDateString( date )
 	else 
 		r += date.getHours() + ":" + min + " AM";
 	return r;
+}
+
+function getHistoryString( historyObj )
+{
+	var date = new Date(historyObj.h_date);
+	return "Date: " + getDateString(date) + "<br>" + historyObj.h_log + "<br" + historyObj.h_val;
 }
 //}

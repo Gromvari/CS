@@ -1,5 +1,8 @@
 //{		GLOBAL VARIABLES
 var alertStatus = false;
+var alertIndex;
+var alertTimout0;
+var alertTimout1;
 
 var alertSound = new Audio("_Sounds/alertPing.mp3");
 var StandardEvent = {
@@ -9,59 +12,57 @@ var StandardEvent = {
 	e_stat: "S_ACTIVE"
 };
 //}
+
 function startDrivers()
 {
-	console.log("Event Driver and Alert Driver Started");
-	function dr( )
-	{ 
-		eventDriver();
-		alertDriver();
-	}
-	dr();
+	console.log("Event Driver  Started");
+	eventDriver();
 	//var t = setTimeout( dr, 2000);
 }
-
 
 function eventDriver()
 {
 	eDrive = setTimeout(eventDriver, 2000);		// loop eventDriver
 	var s = retriveSTORE();
-	for(i = 0; i < s.length ; i++)		// loop event list 
+	if(s != null)						// list is not empty
 	{
-		if( s[i].e_stat == "S_ACTIVE")	// process only active
+		for(i = 0; i < s.length ; i++)		// loop event list 
 		{
-			var currDate = new Date();
-			var date = new Date(s[i].e_date);			//find matching time 
-			if(isMatchingTime(currDate, date)
-			{	
-				// begin processing event, break loop 
-				  console.log("Matching time in Active found");
-				s[i].e_stat = "S_PROCESSING"; 
-				updateSTORE( s ); 
-				clearTimeout(eDrive);
-				processEvent( i );
-				break;
+			if( s[i].e_stat == "S_ACTIVE")	// process only active
+			{
+				var currDate = new Date();
+				var date = new Date(s[i].e_date);			//find matching time 
+				if(isMatchingTime(currDate, date))
+				{	
+					// begin processing event, break loop 
+					  console.log("Matching time in Active found");
+					s[i].e_stat = "S_PROCESSING"; 
+					updateSTORE( s ); 
+					clearTimeout(eDrive);
+					processEvent( i );
+					break;
+				}
 			}
 		}
 	}
 	
 }
 
-
-
 // create alert, wait/handle alert, restart event driver 
 function processEvent( i )
-{
-	  console.log("processEvent(" + i + ")");
+{	  console.log("processEvent(" + i + ")");
 	var s = retriveSTORE();
 	var eventObj = s[i];				//assuming S_PROCESSING
 	s[i].e_stat = "S_ALERT";
 	updateSTORE(s);
 	
+	alertIndex = i;
 	createAlert(eventObj);				//create alert 
 	
-	setTimeout(deleteAlert, 10000);		// after 10 sec, clear alert
+	alertTimout0 = setTimeout(deleteAlert, 10000);		// after 10 sec, clear alert
+	alertTimout1 =setTimeout(missedAlert , 10000);	// after 10 sec, change event status
 	setTimeout(eventDriver, 10000);		// after 10 sec, star eventDriver back up 
+	
 }
 
 function createAlert(eventObj)
@@ -78,50 +79,45 @@ function deleteAlert()
 	deleteAlertPopup();
 }
 
-function alertDriver()
-{
-	if(sessionStorage.getItem("ALERT") == null)		//init "ALERT"
-	{
-		var ap = new Array();
-		sessionStorage.setItem("ALERT", JSON.stringify(ap));
-	}
-	var a = JSON.parse(sessionStorage.getItem("ALERT"));
-	
-	if(a.length != 0)
-	{
-		var alertObj = a.pop();
-		eventAlert(alertObj);
-	}
-	
-	
-	sessionStorage.setItem("ALERT", JSON.stringify(a));
-	
-	//for now just loop
-	var t = setTimeout(alertDriver, 2000);
-	
+function missedAlert()
+{	  console.log("missedAlert()");
+	var s = retriveSTORE();
+	s[alertIndex].e_stat = "S_DEACTIVATED";
+	s[alertIndex].e_value -= 5;
+	updateSTORE( s );
 }
 
-function pushAlert(i) // using storage index
-{
-	var s = retriveSTORE();	
-	s[i].e_stat = "S_PROCESSING";		//set stat to processing
+function clearAlert()
+{	  console.log("clearAlert()");
+	var s = retriveSTORE();
+	s[alertIndex].e_stat = "S_DEACTIVATED";
+	s[alertIndex].e_value += 5;
 	updateSTORE( s );
 	
-	if(sessionStorage.getItem("ALERT") == null)
-	{
-		var ap = new Array();
-		sessionStorage.setItem("ALERT", JSON.stringify(ap));
-	}
+	clearTimeout( alertTimout0);
+	clearTimeout( alertTimout1);
 	
-	var a = JSON.parse(sessionStorage.getItem("ALERT"));
-	a.push(s[i]);
-	console.log("AlertQ: ");
-	console.log( a );
-	sessionStorage.setItem("ALERT", JSON.stringify(a));
+	deleteAlert();
+}
+
+function addHistory( index, name, date,  log, value ) //uses index
+{
+	var s = retriveSTORE();
+	var eventObj = s[i];									//@@@@@@@@@@@@@@@@@ add history here
+	var eventHis = eventObj.e_history;
+	var eventHis = {
+		h_name:		name,
+		h_date:		date,
+		h_log:		log,
+		h_val:		value
+	};
+	eventObj.e_
+	
 }
 
 
 //{ 	Helping functions
+
 function retriveSTORE()
 {
 	return JSON.parse(sessionStorage.getItem("STORE"));
@@ -148,7 +144,8 @@ function createAlertPopup(name, desc, date)
 	aPop.innerHTML = 	'<b>' + name+ '</b><br>' +
 								desc+ '<br>' +
 								getDateString(date)	+ '<br>';
-	aPop.setAttribute('class', 'alertPopupON');	//make visible 						
+	aPop.setAttribute('class', 'alertPopupON');	//make visible 		
+	aPop.innerHTML += "<button onclick='clearAlert()'>Done</button>";
 	alertStatus = true;
 							
 	//aPop.innerHTML += "<button onclick='clearEventAlert(" + id + ")'> Finished </button>";

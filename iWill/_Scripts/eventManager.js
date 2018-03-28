@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 function loadEvents()
 {
 	var index = Number(sessionStorage.getItem("index"));
@@ -34,8 +34,7 @@ function createRow(eventObj)
 		"</tr>";
 }
 
-=======
->>>>>>> 7705e07f62a3158cb68be8bf9b9a4f0acb40bb61
+
 function clearAllEvents()
 {
 	sessionStorage.clear();
@@ -70,6 +69,11 @@ function removeStore(id)
 
 function createReminder ( name, desc, date, alert, pri, stat)
 {
+	var h = {
+		h_date: date, 
+		h_log: "Created", 
+		h_val: 0
+	};
 	var eventObj = {
 		e_name: 		name,
 		e_desc:			desc,
@@ -78,7 +82,8 @@ function createReminder ( name, desc, date, alert, pri, stat)
 		e_priority:		pri,
 		e_stat:			"S_ACTIVE",
 		e_type:			"T_REMINDER",
-		e_value:		0
+		e_value:		0,
+		e_history:		 [h] 
 		
 	};
 	   console.log( "Creating reminder" );
