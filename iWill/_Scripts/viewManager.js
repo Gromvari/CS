@@ -25,7 +25,7 @@ function loadAddReminder()
 	var currMinute  = currDate.getMinutes();
 	var currPeriod;
 	
-	if(currHour > 12)
+	if(currHour >= 12)
 	{
 		currPeriod = "PM";
 		currHour = currHour - 12;
@@ -83,6 +83,62 @@ function loadAddReminder()
 		;
 		
 }
+function loadModifyReminder( i )
+{
+	var body = document.getElementById('body');
+	var s = retriveSTORE();
+	var d = new Date(s[i].e_date);
+	
+	body.innerHTML =
+		"<h1>Modify a Reminder</h1>" +
+		"<form name='eventForm' onsubmit='return addReminderFromHTML()' method='post'>" + //change to modify
+		"<table>" +
+			"<tr>" +
+				"<td>Name: </td>" +
+				"<td><input type='text' name='eventName' value='" + s[i].e_name + "' required></td>" +
+			"</tr>" +
+			"<tr>" +
+				"<td>Desciption: </td>" +
+				"<td><input type='text' name='eventDesc' value='" + s[i].e_desc + "' ></td>" +
+			"</tr>" +
+			"<tr>" +
+				"<td>Time: </td>" +		
+				"<td><input type='text' class='TimeField char2' name='eventDateMonth'	value='" + d.getMonth() + "'>" + "/" +
+				"<input type='text' 	class='TimeField char2' name='eventDateDay'		value='"+ d.getDay() +"'>" +  "/" +
+				"<input type='text' 	class='TimeField char4' name='eventDateYear'	value='"+ d.getFullYear() + "'>" + "<br>" +
+				"<input type='text' 	class='TimeField char2' name='eventDateHour'	value='"+ d.getHours() + "'>" + ":" +
+				"<input type='text' 	class='TimeField char2' name='eventDateMinute'	value='"+ d.getMinutes() +"'>" + 
+				"<input type='text' 	class='TimeField char2' name='eventDatePeriod'	value='"+ "PM" + "'></td>" +  //chagne later
+			"</tr>" +
+			"<tr>" +
+				"<td>Recurrance: </td>" +
+				"<td><select name='eventRec'>" +
+						"<option value='never'>Never</option>" +
+				"</td>" +
+			"</tr>" +
+			"<tr>" +
+				"<td>Alert Type: </td>" +
+				"<td><select name='eventAlert'>" +
+						"<option value='standard'>Standard</option>" +
+						"<option value='none'>None</option>" +
+				"</td>" +
+				
+			"</tr>" +
+			"<tr>" +
+				"<td>Priority*: </td>" +
+				"<td><select name='eventPriority'>" +
+						"<option value='standard'>Standard</option>" +
+						"<option value='low'>Low</option>" +
+						"<option value='high'>High</option>" +
+						"<option value='none'>None</option>" +
+				"</td>" +
+			"</tr>" +
+		"</table>" +
+		"<input type='submit'>" +
+		"<form>"
+		;
+		
+}
 
 function loadViewEvent()
 {
@@ -91,6 +147,7 @@ function loadViewEvent()
 	"<h1>View</h1>" +
 	"<table id='eventTable'>"+
 		"<thead>"+
+		"<th>Actions</th>" +
 		"<th>Name</th>"+
 		"<th>Description</th>"+
 		"<th>Date</th>"+
@@ -117,10 +174,16 @@ function loadEvents()
 	for (i = 0; i < s.length; i++)
 	{
 		var date = new Date(s[i].e_date);
-		//var his = JSON.parse(s[i].e_history);
-	
+		var his = "";
+		for(j = 0; j < s[i].e_history.length; j++)
+		{
+			his += getHistoryString( s[i].e_history[j])  +  "<br>";
+		}
+		//var his = Array.isArray(s[i].e_history);//s[i].e_history.length;
 		b.innerHTML += 
 			"<tr>" +
+				"<td>" + "<button onclick='earlyAlert(" + i + ")'>Finished</button>" +"<br>"  +
+				"<button onclick='loadModifyReminder("+ i +")'>Edit</button>" + "</td>" +
 				"<td>" + s[i].e_name + "</td>" +
 				"<td>" + s[i].e_desc + "</td>" +
 				"<td>" + getDateString(date) + "</td>" +
@@ -129,7 +192,7 @@ function loadEvents()
 				"<td>" + s[i].e_priority + "</td>" +
 				"<td>" + s[i].e_stat + "</td>" +
 				"<td>" + s[i].e_type + "</td>" +
-				"<td>" + getHistoryString(s[i].e_history[0]) + "</td>" + // loop through history object later
+				"<td>" + his+ "</td>" + //s[i].e_history.length + "</td>" + 
 				"<td>" + s[i].e_value + "</td>" +
 			"</tr>";
 	}
@@ -162,6 +225,6 @@ function getDateString( date )
 function getHistoryString( historyObj )
 {
 	var date = new Date(historyObj.h_date);
-	return "Date: " + getDateString(date) + "<br>" + historyObj.h_log + "<br" + historyObj.h_val;
+	return "[Date: " + getDateString(date) + " <br>" +"Log: " + historyObj.h_log + " <br>" + "Val: "+ historyObj.h_val + "]";
 }
 //}

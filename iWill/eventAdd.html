@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="standard.css">
+		<!-- <script src="addEvent.js"></script> -->
+		<script src="eventManager.js"></script>
+
+		<style>
+			h1{
+				padding: 1em;
+				color: white;
+				background-color: black;
+				clear: left;
+				text-align: center;
+			}
+		</style>
+	</head>
+	<body onload="initIndex(), initForm()">
+	<h1> Add Event </h1>
+	<form name="eventForm" onsubmit="return addEventFromHTML()" method="post">
+	<table>
+		<tr><td>Name: </td>			<td><input type="text" name="eventName"></td> </tr>
+		<tr><td>Description: </td>	<td><textarea type="text" name="eventDesc"></textarea></td></tr> 
+		<tr><td>Time: </td>			<td><input type="date" name="eventTime"></td> </tr>
+		<tr><td>When?: </td>		<td><input type="text" name="eventWhen"></td> </tr>
+	</table>
+	<input type="submit" value"Add Event">
+	</form>
+		<p><a href="index.html">Return</a></p>
+	</body>
+</html>

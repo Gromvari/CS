@@ -84,8 +84,12 @@ function missedAlert()
 	var s = retriveSTORE();
 	s[alertIndex].e_stat = "S_DEACTIVATED";
 	s[alertIndex].e_value -= 5;
+	
+	var d = new Date();
 	updateSTORE( s );
+	addHistory(alertIndex, d, "Alert Missed", -5);
 }
+
 
 function clearAlert()
 {	  console.log("clearAlert()");
@@ -100,19 +104,31 @@ function clearAlert()
 	deleteAlert();
 }
 
-function addHistory( index, name, date,  log, value ) //uses index
-{
+function earlyAlert( i )
+{	  console.log("earlyAlert()");
 	var s = retriveSTORE();
-	var eventObj = s[i];									//@@@@@@@@@@@@@@@@@ add history here
-	var eventHis = eventObj.e_history;
-	var eventHis = {
-		h_name:		name,
+	s[i].e_stat = "S_DEACTIVATED";
+	s[i].e_value += 10;
+	var d = new Date();
+	addHistory( i, d, "Early Finish", 10);
+	updateSTORE( s );
+}
+
+function addHistory( i, date,  log, value ) //uses index
+{	  console.log("addHistory()");
+	var s = retriveSTORE();
+	var h = {
 		h_date:		date,
 		h_log:		log,
 		h_val:		value
 	};
-	eventObj.e_
-	
+	//var ha = [h];
+	var currHis = s[i].e_history;
+	currHis.push( h );
+	s[i].e_history[1] = h;
+	//alert(s[i].e_history[1].h_date);
+	s[i].e_history = new Array();
+	updateSTORE( s );	//why the good cuk is this not updating there????
 }
 
 

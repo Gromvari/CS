@@ -66,7 +66,6 @@ function removeStore(id)
 	updateSTORE(s);
 }
 
-
 function createReminder ( name, desc, date, alert, pri, stat)
 {
 	var h = {
@@ -74,6 +73,7 @@ function createReminder ( name, desc, date, alert, pri, stat)
 		h_log: "Created", 
 		h_val: 0
 	};
+	var ha = [10];
 	var eventObj = {
 		e_name: 		name,
 		e_desc:			desc,
@@ -83,7 +83,7 @@ function createReminder ( name, desc, date, alert, pri, stat)
 		e_stat:			"S_ACTIVE",
 		e_type:			"T_REMINDER",
 		e_value:		0,
-		e_history:		 [h] 
+		e_history:		 ha 
 		
 	};
 	   console.log( "Creating reminder" );
@@ -115,7 +115,9 @@ function addReminderFromHTML()
 	
 	createReminder(name, desc, date, alert, pri, "S_ACTIVE"); 
 }
+//{		MODIFIERS
 
+//}
 //{ 	SHORTCUT TO STORE/LOAD
 function retriveSTORE()
 {
