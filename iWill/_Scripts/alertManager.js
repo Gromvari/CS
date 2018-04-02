@@ -97,6 +97,8 @@ function clearAlert()
 	s[alertIndex].e_stat = "S_DEACTIVATED";
 	s[alertIndex].e_value += 5;
 	updateSTORE( s );
+	var d = new Date();
+	addHistory(alertIndex, d, "Cleared Alert", 5);
 	
 	clearTimeout( alertTimout0);
 	clearTimeout( alertTimout1);
@@ -109,9 +111,10 @@ function earlyAlert( i )
 	var s = retriveSTORE();
 	s[i].e_stat = "S_DEACTIVATED";
 	s[i].e_value += 10;
+	updateSTORE( s );
+	
 	var d = new Date();
 	addHistory( i, d, "Early Finish", 10);
-	updateSTORE( s );
 }
 
 function addHistory( i, date,  log, value ) //uses index
@@ -123,11 +126,11 @@ function addHistory( i, date,  log, value ) //uses index
 		h_val:		value
 	};
 	//var ha = [h];
-	var currHis = s[i].e_history;
-	currHis.push( h );
-	s[i].e_history[1] = h;
+	//var currHis = s[i].e_history;
+	s[i].e_history.push( h );
+	//s[i].e_history[1] = h;
 	//alert(s[i].e_history[1].h_date);
-	s[i].e_history = new Array();
+	//s[i].e_history = new Array();
 	updateSTORE( s );	//why the good cuk is this not updating there????
 }
 

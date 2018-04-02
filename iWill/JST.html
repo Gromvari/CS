@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-	<head>
+	<head onload="initEventManager()">
 		<link rel="stylesheet" type="text/css" href="standard.css">
 		<link rel="stylesheet" type="text/css" href="alert.css">
 		<script src="_Scripts/global.js"></script>
@@ -16,7 +16,7 @@
 		</style>
 	</head>
 	
-	<body onload="globalClock(), startDrivers()">
+	<body onload="globalClock(), startDrivers(), initEventManager()">
 	
 		<div class="banner">
 			<h1>JS Testing Environment</h1>

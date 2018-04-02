@@ -18,7 +18,7 @@ function loadAddReminder()
 {
 	var body = document.getElementById('body');
 	var currDate 	= new Date();
-	var currMonth 	= currDate.getMonth();
+	var currMonth 	= Number(currDate.getMonth()) + 1;
 	var currDay 	= currDate.getDate();
 	var currYear 	= currDate.getFullYear();
 	var currHour 	= currDate.getHours();
@@ -47,7 +47,7 @@ function loadAddReminder()
 			"</tr>" +
 			"<tr>" +
 				"<td>Time: </td>" +		//fetch current date 
-				"<td><input type='text' class='TimeField char2' name='eventDateMonth'	value='" +(Number(currMonth) + 1) + "'>" + "/" +
+				"<td><input type='text' class='TimeField char2' name='eventDateMonth'	value='" +currMonth+"'>" + "/" +
 				"<input type='text' 	class='TimeField char2' name='eventDateDay'		value='"+currDay+"'>" +  "/" +
 				"<input type='text' 	class='TimeField char4' name='eventDateYear'	value='"+currYear+"'>" + "<br>" +
 				"<input type='text' 	class='TimeField char2' name='eventDateHour'	value='"+currHour+"'>" + ":" +
@@ -83,11 +83,30 @@ function loadAddReminder()
 		;
 		
 }
-function loadModifyReminder( i )
+function loadModifyReminder( id )
 {
 	var body = document.getElementById('body');
 	var s = retriveSTORE();
+	var i = 0;
+	for(j = 0; j < s.length; j++)
+	{
+		if(s[j].e_id == id)
+		{
+			i = j;
+			break;
+		}
+	}
 	var d = new Date(s[i].e_date);
+	var currHour 	= d.getHours();
+	var currPeriod;
+	
+	if(currHour >= 12)
+	{
+		currPeriod = "PM";
+		currHour = currHour - 12;
+	}
+	else
+		currPeriod = "AM";
 	
 	body.innerHTML =
 		"<h1>Modify a Reminder</h1>" +
@@ -103,12 +122,12 @@ function loadModifyReminder( i )
 			"</tr>" +
 			"<tr>" +
 				"<td>Time: </td>" +		
-				"<td><input type='text' class='TimeField char2' name='eventDateMonth'	value='" + d.getMonth() + "'>" + "/" +
+				"<td><input type='text' class='TimeField char2' name='eventDateMonth'	value='" + (Number(d.getMonth()) +1) + "'>" + "/" +
 				"<input type='text' 	class='TimeField char2' name='eventDateDay'		value='"+ d.getDay() +"'>" +  "/" +
 				"<input type='text' 	class='TimeField char4' name='eventDateYear'	value='"+ d.getFullYear() + "'>" + "<br>" +
-				"<input type='text' 	class='TimeField char2' name='eventDateHour'	value='"+ d.getHours() + "'>" + ":" +
+				"<input type='text' 	class='TimeField char2' name='eventDateHour'	value='"+ currHour + "'>" + ":" +
 				"<input type='text' 	class='TimeField char2' name='eventDateMinute'	value='"+ d.getMinutes() +"'>" + 
-				"<input type='text' 	class='TimeField char2' name='eventDatePeriod'	value='"+ "PM" + "'></td>" +  //chagne later
+				"<input type='text' 	class='TimeField char2' name='eventDatePeriod'	value='"+ currPeriod + "'></td>" +  //chagne later
 			"</tr>" +
 			"<tr>" +
 				"<td>Recurrance: </td>" +
@@ -164,7 +183,7 @@ function loadViewEvent()
 	"</table>";
 	
 	loadEvents();
-	body.innerHTML += "<button onclick='clearAllEvents()'> DOOM BUTTON </button>";
+	body.innerHTML += "<button onclick='clearAllEvents(), loadViewEvent()'> DOOM BUTTON </button>";
 }
 
 function loadEvents()
@@ -179,11 +198,11 @@ function loadEvents()
 		{
 			his += getHistoryString( s[i].e_history[j])  +  "<br>";
 		}
-		//var his = Array.isArray(s[i].e_history);//s[i].e_history.length;
 		b.innerHTML += 
 			"<tr>" +
 				"<td>" + "<button onclick='earlyAlert(" + i + ")'>Finished</button>" +"<br>"  +
-				"<button onclick='loadModifyReminder("+ i +")'>Edit</button>" + "</td>" +
+				"<button onclick='loadModifyReminder("+ s[i].e_id +")'>Edit</button>" + 
+				"<button onclick='deleteEvent(" + s[i].e_id +")'>Delete</button>" + "</td>" +
 				"<td>" + s[i].e_name + "</td>" +
 				"<td>" + s[i].e_desc + "</td>" +
 				"<td>" + getDateString(date) + "</td>" +
@@ -192,7 +211,7 @@ function loadEvents()
 				"<td>" + s[i].e_priority + "</td>" +
 				"<td>" + s[i].e_stat + "</td>" +
 				"<td>" + s[i].e_type + "</td>" +
-				"<td>" + his+ "</td>" + //s[i].e_history.length + "</td>" + 
+				"<td>" + his+ "</td>" + 
 				"<td>" + s[i].e_value + "</td>" +
 			"</tr>";
 	}

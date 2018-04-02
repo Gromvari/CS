@@ -3,7 +3,10 @@
 	bottom: 0;
 	right: 0;
 	th: 200px;
+	
+	text-align: center;
 	height: 200px;
+	width: 200px;
 	background-color: Green;
 }
 .hidden {
