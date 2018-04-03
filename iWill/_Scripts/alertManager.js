@@ -4,6 +4,11 @@ var alertIndex;
 var alertTimout0;
 var alertTimout1;
 
+var PRI_STANDARD = 1;
+var PRI_LOW = .5;
+var PRI_HIGH = 2;
+var PRI_NONE = 0;
+
 var alertSound = new Audio("_Sounds/alertPing.mp3");
 var StandardEvent = {
 	e_name: "Standard Event Name",
@@ -83,22 +88,23 @@ function missedAlert()
 {	  console.log("missedAlert()");
 	var s = retriveSTORE();
 	s[alertIndex].e_stat = "S_DEACTIVATED";
-	s[alertIndex].e_value -= 5;
+	var point = (-5 * priorityModifier(s[alertIndex].e_priority));
+	s[alertIndex].e_value += 5;
 	
 	var d = new Date();
 	updateSTORE( s );
-	addHistory(alertIndex, d, "Alert Missed", -5);
+	addHistory(alertIndex, d, "Alert Missed", point);
 }
-
 
 function clearAlert()
 {	  console.log("clearAlert()");
 	var s = retriveSTORE();
 	s[alertIndex].e_stat = "S_DEACTIVATED";
-	s[alertIndex].e_value += 5;
+	var point = (5 * priorityModifier(s[alertIndex].e_priority));
+	s[alertIndex].e_value += point;
 	updateSTORE( s );
 	var d = new Date();
-	addHistory(alertIndex, d, "Cleared Alert", 5);
+	addHistory(alertIndex, d, "Cleared Alert", point);
 	
 	clearTimeout( alertTimout0);
 	clearTimeout( alertTimout1);
@@ -110,11 +116,18 @@ function earlyAlert( i )
 {	  console.log("earlyAlert()");
 	var s = retriveSTORE();
 	s[i].e_stat = "S_DEACTIVATED";
-	s[i].e_value += 10;
+	
+	if(s[i].e_rec != "REC_NONE")
+	{
+										//currently working on
+	}
+	
+	var point = (10 * priorityModifier(s[i].e_priority) );
+	s[i].e_value += point;
 	updateSTORE( s );
 	
 	var d = new Date();
-	addHistory( i, d, "Early Finish", 10);
+	addHistory( i, d, "Early Finish", point);
 }
 
 function addHistory( i, date,  log, value ) //uses index
@@ -147,6 +160,23 @@ function updateSTORE( s )
 	sessionStorage.setItem("STORE", JSON.stringify(s));
 }
 
+function priorityModifier( pri )
+{
+	switch(pri){
+		case "PRI_STANDARD":
+			return PRI_STANDARD;
+			break;
+		case "PRI_LOW":
+			return PRI_LOW;
+			break;
+		case "PRI_HIGH":
+			return PRI_HIGH;
+			break;
+		default:
+			return 0;
+	}
+}
+
 function playAlertSound()
 {	  console.log("playAlertSound()");
 	alertSound.loop = true;
@@ -163,7 +193,7 @@ function createAlertPopup(name, desc, date)
 	aPop.innerHTML = 	'<b>' + name+ '</b><br>' +
 								desc+ '<br>' +
 								getDateString(date)	+ '<br>';
-	aPop.setAttribute('class', 'alertPopupON');	//make visible 		
+	aPop.setAttribute('class', 'alertPopupON');	//make visible 
 	aPop.innerHTML += "<button onclick='clearAlert()'>Done</button>";
 	alertStatus = true;
 							

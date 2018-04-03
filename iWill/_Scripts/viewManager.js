@@ -57,7 +57,8 @@ function loadAddReminder()
 			"<tr>" +
 				"<td>Recurrance: </td>" +
 				"<td><select name='eventRec'>" +
-						"<option value='never'>Never</option>" +
+						"<option value='REC_NONE'>None</option>" +
+						"<option value='REC_WEEKLY'>Weekly</option>" +
 				"</td>" +
 			"</tr>" +
 			"<tr>" +
@@ -71,10 +72,10 @@ function loadAddReminder()
 			"<tr>" +
 				"<td>Priority*: </td>" +
 				"<td><select name='eventPriority'>" +
-						"<option value='standard'>Standard</option>" +
-						"<option value='low'>Low</option>" +
-						"<option value='high'>High</option>" +
-						"<option value='none'>None</option>" +
+						"<option value='PRI_STANDARD'>Standard</option>" +
+						"<option value='PRI_LOW'>Low</option>" +
+						"<option value='PRI_HIGH'>High</option>" +
+						"<option value='PRI_NONE'>None</option>" +
 				"</td>" +
 			"</tr>" +
 		"</table>" +
@@ -132,7 +133,8 @@ function loadModifyReminder( id )
 			"<tr>" +
 				"<td>Recurrance: </td>" +
 				"<td><select name='eventRec'>" +
-						"<option value='never'>Never</option>" +
+						"<option value='REC_NONE'>None</option>" +
+						"<option value='REC_WEEKLY'>Weekly</option>" +
 				"</td>" +
 			"</tr>" +
 			"<tr>" +
@@ -146,10 +148,10 @@ function loadModifyReminder( id )
 			"<tr>" +
 				"<td>Priority*: </td>" +
 				"<td><select name='eventPriority'>" +
-						"<option value='standard'>Standard</option>" +
-						"<option value='low'>Low</option>" +
-						"<option value='high'>High</option>" +
-						"<option value='none'>None</option>" +
+						"<option value='PRI_STANDARD'>Standard</option>" +
+						"<option value='PRI_LOW'>Low</option>" +
+						"<option value='PRI_HIGH'>High</option>" +
+						"<option value='PRI_NONE'>None</option>" +
 				"</td>" +
 			"</tr>" +
 		"</table>" +
@@ -170,12 +172,13 @@ function loadViewEvent()
 		"<th>Name</th>"+
 		"<th>Description</th>"+
 		"<th>Date</th>"+
-		"<th>ID</th>"+
+		"<th>ID*</th>"+
 		"<th>Alert Type</th>" +
 		"<th>Priority</th>" +
 		"<th>Status*</th>" +
 		"<th>Type*</th>" +
-		"<th>History</th>" +
+		"<th>Recurrance*</th>" +
+		"<th>History*</th>" +
 		"<th>Value</th>" +
 		"</thead>"+
 		"<tbody id='eventTableBody'>"+
@@ -211,6 +214,7 @@ function loadEvents()
 				"<td>" + s[i].e_priority + "</td>" +
 				"<td>" + s[i].e_stat + "</td>" +
 				"<td>" + s[i].e_type + "</td>" +
+				"<td>" + s[i].e_rec + "</td>" +
 				"<td>" + his+ "</td>" + 
 				"<td>" + s[i].e_value + "</td>" +
 			"</tr>";

@@ -97,7 +97,7 @@ function removeStore(id)
 	updateSTORE(s);
 }
 
-function createReminder ( name, desc, date, alert, pri, stat)
+function createReminder ( name, desc, date, alert, pri, stat, rec)
 {	  console.log("createReminder()");
 	var h = {
 		h_date: date, 
@@ -113,6 +113,7 @@ function createReminder ( name, desc, date, alert, pri, stat)
 		e_priority:		pri,
 		e_stat:			"S_ACTIVE",
 		e_type:			"T_REMINDER",
+		e_rec:			rec,
 		e_value:		0,
 		e_history:		 ha 
 		
@@ -122,18 +123,11 @@ function createReminder ( name, desc, date, alert, pri, stat)
 	putStore( eventObj );
 }
 
-function editReminder(id, name, desc, date, alert, pri, stat)
+function editReminder(id, name, desc, date, alert, pri, stat, rec)
 {
 	var s = retriveSTORE();
-	var index;
-	for(i = 0; i < s.length; i++)
-	{
-		if(s[i].e_id == id)
-		{
-			index = i;
-			break;
-		}
-	}
+	var index = getIndex();
+
 	var eventObj = s[i];
 	
 	if(name)
@@ -148,6 +142,8 @@ function editReminder(id, name, desc, date, alert, pri, stat)
 		eventObj.e_pri = pri;
 	if(stat)
 		eventObj.e_stat = stat;
+	if(rec)
+		eventObj.e_rec = rec;
 	
 	updateSTORE( s );
 }
@@ -163,46 +159,56 @@ function addReminderFromHTML()
 	var dateMinute 	= document.forms["eventForm"]["eventDateMinute"].value;
 	var datePeriod 	= document.forms["eventForm"]["eventDatePeriod"].value;
 	var alert 			= document.forms["eventForm"]["eventAlert"].value;
-	//var rec 			= document.forms["eventForm"]["eventRec"].value;
+	var rec 			= document.forms["eventForm"]["eventRec"].value;
 	var pri 				= document.forms["eventForm"]["eventPriority"].value;
-	
-
 	
 	if(datePeriod == "PM")
 		dateHour = dateHour - 12;
 	
 	var date = new Date(dateYear, dateMonth, dateDay , dateHour, dateMinute, 0, 0);
 	
-	createReminder(name, desc, date, alert, pri, "S_ACTIVE"); 
+	createReminder(name, desc, date, alert, pri, "S_ACTIVE", rec); 
 }
 
 function modifyReminderFromHTML()
 {	  console.log("modifyReminderFromHTML()");
 	var name 			= document.forms["eventForm"]["eventName"].value;
 	var desc 			= document.forms["eventForm"]["eventDesc"].value;
-	var dateMonth 	= document.forms["eventForm"]["eventDateMonth"].value -1;
+	var dateMonth 		= document.forms["eventForm"]["eventDateMonth"].value -1;
 	var dateDay 		= Number(document.forms["eventForm"]["eventDateDay"].value) + 1;
 	var dateYear 		= document.forms["eventForm"]["eventDateYear"].value;
 	var dateHour 		= document.forms["eventForm"]["eventDateHour"].value;
-	var dateMinute 	= document.forms["eventForm"]["eventDateMinute"].value;
-	var datePeriod 	= document.forms["eventForm"]["eventDatePeriod"].value;
+	var dateMinute 		= document.forms["eventForm"]["eventDateMinute"].value;
+	var datePeriod 		= document.forms["eventForm"]["eventDatePeriod"].value;
 	var alert 			= document.forms["eventForm"]["eventAlert"].value;
-	//var rec 			= document.forms["eventForm"]["eventRec"].value;
-	var pri 				= document.forms["eventForm"]["eventPriority"].value;
+	var rec 			= document.forms["eventForm"]["eventRec"].value;
+	var pri 			= document.forms["eventForm"]["eventPriority"].value;
 	
 
 	
 	if(datePeriod == "PM")
 		dateHour = dateHour - 12;
-	
 	var date = new Date(dateYear, dateMonth, dateDay , dateHour, dateMinute, 0, 0);
 	
-	createReminder(name, desc, date, alert, pri, "S_ACTIVE"); 
+	createReminder(name, desc, date, alert, pri, "S_ACTIVE", rec); 
 	
 }
 
 //{		MODIFIERS
-
+function returnRecDate(id, mod)
+{
+	if(mod == "REC_NONE")
+		return false;
+	var s = retriveSTORE();
+	var i = getIndex(id);						//Currently working on
+	var date = new Date(s[i].e_date);
+	
+	if(mod == "REC_WEEKLY")
+	{
+		return Date(s[i].e_date + 14);
+	}
+	updateSTORE(s);
+}
 //}
 //{ 	SHORTCUT TO STORE/LOAD
 function retriveSTORE()
@@ -214,5 +220,18 @@ function updateSTORE( s )
 {
 	  console.log("storing an object");
 	sessionStorage.setItem("STORE", JSON.stringify(s));
+}
+
+function getIndex(id)
+{
+	var s = retriveSTORE();
+	for(i = 0; i <s.length; i++)
+	{
+		if(s[i].e_id == id)
+		{
+			return i;
+			break;
+		}
+	}
 }
 //}
