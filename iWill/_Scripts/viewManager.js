@@ -17,18 +17,26 @@ function loadAddEventDemo()
 function loadAddReminder()
 {
 	var body = document.getElementById('body');
-	var currDate 	= new Date();
-	var currMonth 	= Number(currDate.getMonth()) + 1;
-	var currDay 	= currDate.getDate();
-	var currYear 	= currDate.getFullYear();
-	var currHour 	= currDate.getHours();
-	var currMinute  = currDate.getMinutes();
+	var currDate 		= new Date();
+	var currMonth 	= currDate.getMonth() + 1;
+	var currDay 		= currDate.getDate();
+	var currYear 		= currDate.getFullYear();
+	var currHour 		= currDate.getHours();
+	var currMinute  	= currDate.getMinutes();
 	var currPeriod;
 	
-	if(currHour >= 12)
+	// if(currHour >= 12)
+	// {
+		// currPeriod = "PM";
+		// currHour = currHour - 12;
+	// }
+	// else
+	if(currHour == 12)
+		currPeriod = "PM"
+	else if( currHour > 12)
 	{
+		currHour -= 12;
 		currPeriod = "PM";
-		currHour = currHour - 12;
 	}
 	else
 		currPeriod = "AM";
@@ -167,7 +175,7 @@ function loadModifyReminder( id )
 function loadViewEvent()
 {
 	var body = document.getElementById('body');
-	body.innerHTML =
+	body.innerHTML +=
 	"<h1>View</h1>" +
 	"<table id='eventTable'>"+
 		"<thead>"+
@@ -189,7 +197,7 @@ function loadViewEvent()
 	"</table>";
 	
 	loadEvents();
-	body.innerHTML += "<button onclick='clearAllEvents(), loadViewEvent()'> DOOM BUTTON </button>";
+	body.innerHTML += "<button onclick='clearAllEvents() loadViewEvent()'> DOOM BUTTON </button>";
 }
 
 function loadEvents()
@@ -206,9 +214,9 @@ function loadEvents()
 		}
 		b.innerHTML += 
 			"<tr>" +
-				"<td>" + "<button onclick='earlyEvent(" + i + ")'>Finished</button>" +"<br>"  +
-				"<button onclick='loadModifyReminder("+ s[i].e_id +")'>Edit</button>" + 
-				"<button onclick='deleteEvent(" + s[i].e_id +")'>Delete</button>" + "</td>" +
+				"<td>" + "<button class='actionButton' onclick='earlyEvent(" + i + ")'>Finished</button>" +"<br>"  +
+				"<button class='actionButton' onclick='loadModifyReminder("+ s[i].e_id +")'>Edit</button>" + 
+				"<button class='actionButton' onclick='deactivateEvent(" + s[i].e_id +")'>Remove</button>" + "</td>" +
 				"<td>" + s[i].e_name + "</td>" +
 				"<td>" + s[i].e_desc + "</td>" +
 				"<td>" + getDateString(date) + "</td>" +
@@ -259,45 +267,37 @@ function loadEventsClient()
 		{
 			his += getHistoryString( s[i].e_history[j])  +  "<br>";
 		}
+		
+		var c = "";
+		var b1 = "<button class='actionButton' onclick='earlyEvent(" + i + ");loadViewEventClient()'>Finished</button>";
+		var b2 = "<button class='actionButton' onclick='deactivateEvent(" + s[i].e_id +");loadViewEventClient()'>Remove</button>";
+		
+		if(s[i].e_stat == "S_DEACTIVATED")
+		{
+			c = "deactivated";
+			b1 = "<button class='actionButton' onclick='activateEvent(" + s[i].e_id + ");loadViewEventClient() '>Activate</button>";
+			b2 ="<button class='actionButton delButton' onclick='deleteEvent(" + s[i].e_id +");loadViewEventClient()'>Delete</button>";
+		}
+		var style = "";  //"background-color:rgb(" + (s[i].e_value ) + "," + (s[i].e_value * 25) + ",0)";  ADD COLOR FINIDER LATER
+		
+		
 		b.innerHTML += 
-			"<tr>" +
-				"<td>" + "<button onclick='earlyEvent(" + i + ")'>Finished</button>" +"<br>"  +
-				"<button onclick='loadModifyReminder("+ s[i].e_id +")'>Edit</button>" + 
-				"<button onclick='deleteEvent(" + s[i].e_id +")'>Delete</button>" + "</td>" +
-				"<td>" + s[i].e_name + "</td>" +
+			"<tr class='"+ c +"'>" +
+				"<td>" + b1 +"<br>"  +
+					"<button class='actionButton' onclick='loadModifyReminder("+ s[i].e_id +");loadViewEventClient()'>Edit</button>" + 
+					b2 + 
+				"</td>" +
+				"<td >" + s[i].e_name + "</td>" +
 				"<td>" + s[i].e_desc + "</td>" +
 				"<td>" + getDateString(date) + "</td>" +
 				"<td>" + s[i].e_alert + "</td>" +
 				"<td>" + s[i].e_priority + "</td>" +
-				"<td>" + s[i].e_value + "</td>" +
+				"<td style='"+ style +"'>" + s[i].e_value + "</td>" +
 			"</tr>";
 	}
 }
 
 //{ 	SHORTCUT TO STORE/LOAD
-function retriveSTORE()
-{
-	return JSON.parse(sessionStorage.getItem("STORE"));
-}
-
-function updateSTORE( s )
-{
-	sessionStorage.setItem("STORE", JSON.stringify(s));
-}
-
-function getDateString( date )
-{	
-	var r = (Number(date.getMonth()) + 1) + "/" + (Number(date.getDate())  + 1)+"/" + date.getFullYear() + "<br>";
-	var min = date.getMinutes();
-	if(date.getMinutes() < 10)
-		min = "0" + date.getMinutes();
-	if(date.getHours() > 12)
-		r += (date.getHours() - 12) + ":" + min + " PM";
-	else 
-		r += date.getHours() + ":" + min + " AM";
-	return r;
-}
-
 function getHistoryString( historyObj )
 {
 	var date = new Date(historyObj.h_date);

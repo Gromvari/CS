@@ -52,7 +52,7 @@ function deleteEvent(id)
 		{
 			s.splice(i, 1);
 		  console.log("Event Removed");
-		  break;
+			break;
 		}
 	}
 	updateSTORE( s );
@@ -153,21 +153,21 @@ function addReminderFromHTML()
 {	 console.log("addReminderFromHTML()");
 	var name 			= document.forms["eventForm"]["eventName"].value;
 	var desc 			= document.forms["eventForm"]["eventDesc"].value;
-	var dateMonth 	= document.forms["eventForm"]["eventDateMonth"].value -1;
-	var dateDay 		= Number(document.forms["eventForm"]["eventDateDay"].value) + 1;
+	var dateMonth 	= document.forms["eventForm"]["eventDateMonth"].value;
+	var dateDay 		= document.forms["eventForm"]["eventDateDay"].value;
 	var dateYear 		= document.forms["eventForm"]["eventDateYear"].value;
 	var dateHour 		= document.forms["eventForm"]["eventDateHour"].value;
 	var dateMinute 	= document.forms["eventForm"]["eventDateMinute"].value;
 	var datePeriod 	= document.forms["eventForm"]["eventDatePeriod"].value;
 	var alert 			= document.forms["eventForm"]["eventAlert"].value;
-	var rec 			= document.forms["eventForm"]["eventRec"].value;
+	var rec 				= document.forms["eventForm"]["eventRec"].value;
 	var pri 				= document.forms["eventForm"]["eventPriority"].value;
 	
-	if(datePeriod == "PM")
+	if(datePeriod == "PM" && dateHour != 12)
 		dateHour = dateHour - 12;
 	
-	var date = new Date(dateYear, dateMonth, dateDay , dateHour, dateMinute, 0, 0);
-	
+	var date = new Date(dateYear, Number(dateMonth) - 1, Number(dateDay) + 1, dateHour, dateMinute, 0, 0);
+
 	createReminder(name, desc, date, alert, pri, "S_ACTIVE", rec); 
 }
 

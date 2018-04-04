@@ -1,7 +1,11 @@
+* {
+	font-family: "Lucida Console", Monospace, monospace;
+}
+
 body {
     background-color: gray;
-	/* background-image: url("background1.jpg"); */
-	/* background-repeat: no-repeat; */
+	/background-image: url("background1.jpg"); 
+	background-repeat: no-repeat; 
 }
 #body {
 	position: absolute;
@@ -87,11 +91,21 @@ button.editEventButton {
 	text-align: center;
 }
 
-
+/* 
 table {
 	width: 800px;
-}
+} */
 
 input {
 	border-style: hidden;
+}
+
+.actionButton {
+	background-color: #4CAF50;
+	border: none;
+	color:	white;
+	text-decoration:	none;
+	display:	inline-block;
+	font size: .8em;
+	padding: .1em;
 }

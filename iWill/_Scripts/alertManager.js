@@ -86,6 +86,26 @@ function deleteAlert()
 	deleteAlertPopup();
 }
 
+function deactivateEvent(id)
+{	  console.log("deactivateEvent()");
+	var s = retriveSTORE();
+	var i = getIndex(id);
+	s[i].e_stat = "S_DEACTIVATED";
+	updateSTORE(s);
+	
+	var d = new Date();
+	addHistory(i, d, "Deactivated", 0);
+}
+function activateEvent(id)
+{	  console.log("deactivateEvent()");
+	var s = retriveSTORE();
+	var i = getIndex(id);
+	s[i].e_stat = "S_ACTIVE";
+	updateSTORE(s);
+	
+	var d = new Date();
+	addHistory(i, d, "Activated", 0);
+}
 function missedEvent()
 {	  console.log("missedEvent()");
 	var s = retriveSTORE();
@@ -96,7 +116,7 @@ function missedEvent()
 		s[alertIndex].e_stat = "S_DEACTIVATED";
 	
 	var point = (-5 * priorityModifier(s[alertIndex].e_priority));
-	s[alertIndex].e_value += 5;
+	s[alertIndex].e_value += point;
 	
 	var d = new Date();
 	updateSTORE( s );
@@ -158,16 +178,6 @@ function addHistory( i, date,  log, value ) //uses index
 
 //{ 	Helping functions
 
-function retriveSTORE()
-{
-	return JSON.parse(sessionStorage.getItem("STORE"));
-}
-
-function updateSTORE( s )
-{
-	sessionStorage.setItem("STORE", JSON.stringify(s));
-}
-
 function priorityModifier( pri )
 {
 	switch(pri){
@@ -216,12 +226,16 @@ function deleteAlertPopup()
 
 function getDateString( date )
 {	
-	var r = (Number(date.getMonth()) + 1) + "/" + (Number(date.getDate())  + 1)+"/" + date.getFullYear() + "<br>";
+	var r = (Number(date.getMonth()) + 1) + "/" + (Number(date.getDate()) )+"/" + date.getFullYear() + "<br>";
 	var min = date.getMinutes();
+	
 	if(date.getMinutes() < 10)
 		min = "0" + date.getMinutes();
+		
 	if(date.getHours() > 12)
 		r += (date.getHours() - 12) + ":" + min + " PM";
+	else if(date.getHours() == 12)
+		r += date.getHours() + ":" + min + " PM";
 	else 
 		r += date.getHours() + ":" + min + " AM";
 	return r;
