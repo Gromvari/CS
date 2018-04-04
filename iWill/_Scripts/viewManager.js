@@ -59,12 +59,13 @@ function loadAddReminder()
 				"<td><select name='eventRec'>" +
 						"<option value='REC_NONE'>None</option>" +
 						"<option value='REC_WEEKLY'>Weekly</option>" +
+						"<option value='REC_DAYLY'>Dayly</option>" +
 				"</td>" +
 			"</tr>" +
 			"<tr>" +
 				"<td>Alert Type: </td>" +
 				"<td><select name='eventAlert'>" +
-						"<option value='standard'>Standard</option>" +
+						"<option value='ALE_STANDARD'>Standard</option>" +
 						"<option value='none'>None</option>" +
 				"</td>" +
 				
@@ -84,6 +85,7 @@ function loadAddReminder()
 		;
 		
 }
+
 function loadModifyReminder( id )
 {
 	var body = document.getElementById('body');
@@ -111,7 +113,7 @@ function loadModifyReminder( id )
 	
 	body.innerHTML =
 		"<h1>Modify a Reminder</h1>" +
-		"<form name='eventForm' onsubmit='return addReminderFromHTML()' method='post'>" + //change to modify
+		"<form name='eventForm' onsubmit='return modifyReminderFromHTML("+ id +")' method='post'>" + //change to modify
 		"<table>" +
 			"<tr>" +
 				"<td>Name: </td>" +
@@ -135,12 +137,13 @@ function loadModifyReminder( id )
 				"<td><select name='eventRec'>" +
 						"<option value='REC_NONE'>None</option>" +
 						"<option value='REC_WEEKLY'>Weekly</option>" +
+						"<option value='REC_DAYLY'>Dayly</option>" +
 				"</td>" +
 			"</tr>" +
 			"<tr>" +
 				"<td>Alert Type: </td>" +
 				"<td><select name='eventAlert'>" +
-						"<option value='standard'>Standard</option>" +
+						"<option value='ALE_STANDARD'>Standard</option>" +
 						"<option value='none'>None</option>" +
 				"</td>" +
 				
@@ -203,7 +206,7 @@ function loadEvents()
 		}
 		b.innerHTML += 
 			"<tr>" +
-				"<td>" + "<button onclick='earlyAlert(" + i + ")'>Finished</button>" +"<br>"  +
+				"<td>" + "<button onclick='earlyEvent(" + i + ")'>Finished</button>" +"<br>"  +
 				"<button onclick='loadModifyReminder("+ s[i].e_id +")'>Edit</button>" + 
 				"<button onclick='deleteEvent(" + s[i].e_id +")'>Delete</button>" + "</td>" +
 				"<td>" + s[i].e_name + "</td>" +
@@ -216,6 +219,56 @@ function loadEvents()
 				"<td>" + s[i].e_type + "</td>" +
 				"<td>" + s[i].e_rec + "</td>" +
 				"<td>" + his+ "</td>" + 
+				"<td>" + s[i].e_value + "</td>" +
+			"</tr>";
+	}
+}
+
+function loadViewEventClient()
+{
+	var body = document.getElementById('body');
+	body.innerHTML =
+	"<h1>View</h1>" +
+	"<table id='eventTable'>"+
+		"<thead>"+
+		"<th>Actions</th>" +
+		"<th>Name</th>"+
+		"<th>Description</th>"+
+		"<th>Date</th>"+
+		"<th>Alert Type</th>" +
+		"<th>Priority</th>" +
+		"<th>Value</th>" +
+		"</thead>"+
+		"<tbody id='eventTableBody'>"+
+		"</tbody>"+
+	"</table>";
+	
+	loadEventsClient();
+	body.innerHTML += "<button onclick='clearAllEvents(), loadViewEvent()'> DOOM BUTTON </button>";
+}
+
+function loadEventsClient()
+{
+	var s = retriveSTORE();
+	var b = document.getElementById("eventTable");
+	for (i = 0; i < s.length; i++)
+	{
+		var date = new Date(s[i].e_date);
+		var his = "";
+		for(j = 0; j < s[i].e_history.length; j++)
+		{
+			his += getHistoryString( s[i].e_history[j])  +  "<br>";
+		}
+		b.innerHTML += 
+			"<tr>" +
+				"<td>" + "<button onclick='earlyEvent(" + i + ")'>Finished</button>" +"<br>"  +
+				"<button onclick='loadModifyReminder("+ s[i].e_id +")'>Edit</button>" + 
+				"<button onclick='deleteEvent(" + s[i].e_id +")'>Delete</button>" + "</td>" +
+				"<td>" + s[i].e_name + "</td>" +
+				"<td>" + s[i].e_desc + "</td>" +
+				"<td>" + getDateString(date) + "</td>" +
+				"<td>" + s[i].e_alert + "</td>" +
+				"<td>" + s[i].e_priority + "</td>" +
 				"<td>" + s[i].e_value + "</td>" +
 			"</tr>";
 	}

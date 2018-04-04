@@ -126,26 +126,27 @@ function createReminder ( name, desc, date, alert, pri, stat, rec)
 function editReminder(id, name, desc, date, alert, pri, stat, rec)
 {
 	var s = retriveSTORE();
-	var index = getIndex();
+	var i = getIndex(id);
 
-	var eventObj = s[i];
 	
 	if(name)
-		eventObj.e_name = name;
+		s[i].e_name = name;
 	if(desc)
-		eventObj.e_desc = desc;
+		s[i].e_desc = desc;
 	if(date)
-		eventObj.e_date = date;
+		s[i].e_date = date;
 	if(alert)
-		eventObj.e_alert = alert;
+		s[i].e_alert = alert;
 	if(pri)
-		eventObj.e_pri = pri;
+		s[i].e_pri = pri;
 	if(stat)
-		eventObj.e_stat = stat;
+		s[i].e_stat = stat;
 	if(rec)
-		eventObj.e_rec = rec;
-	
+		s[i].e_rec = rec;
 	updateSTORE( s );
+	
+	var d = new Date();
+	addHistory(i, d, "Edited", 0);
 }
 
 function addReminderFromHTML()
@@ -170,7 +171,7 @@ function addReminderFromHTML()
 	createReminder(name, desc, date, alert, pri, "S_ACTIVE", rec); 
 }
 
-function modifyReminderFromHTML()
+function modifyReminderFromHTML(id)
 {	  console.log("modifyReminderFromHTML()");
 	var name 			= document.forms["eventForm"]["eventName"].value;
 	var desc 			= document.forms["eventForm"]["eventDesc"].value;
@@ -190,24 +191,25 @@ function modifyReminderFromHTML()
 		dateHour = dateHour - 12;
 	var date = new Date(dateYear, dateMonth, dateDay , dateHour, dateMinute, 0, 0);
 	
-	createReminder(name, desc, date, alert, pri, "S_ACTIVE", rec); 
+	editReminder(id, name, desc, date, alert, pri, "S_ACTIVE", rec); 
 	
 }
 
 //{		MODIFIERS
-function returnRecDate(id, mod)
-{
-	if(mod == "REC_NONE")
-		return false;
-	var s = retriveSTORE();
-	var i = getIndex(id);						//Currently working on
-	var date = new Date(s[i].e_date);
-	
+function procRec(date, mod)
+{	  console.log("procRec()");
+	var curr = new Date(date);
 	if(mod == "REC_WEEKLY")
 	{
-		return Date(s[i].e_date + 14);
+		curr.setDate(curr.getDate() + 7);
+		return curr;
 	}
-	updateSTORE(s);
+	if(mod == "REC_DAYLY")
+	{
+		curr.setDate(curr.getDate() + 1);
+		return curr;
+	}
+	return curr;
 }
 //}
 //{ 	SHORTCUT TO STORE/LOAD

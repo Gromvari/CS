@@ -9,6 +9,8 @@ var PRI_LOW = .5;
 var PRI_HIGH = 2;
 var PRI_NONE = 0;
 
+var ALERT_LENGTH = 10000;
+
 var alertSound = new Audio("_Sounds/alertPing.mp3");
 var StandardEvent = {
 	e_name: "Standard Event Name",
@@ -64,9 +66,9 @@ function processEvent( i )
 	alertIndex = i;
 	createAlert(eventObj);				//create alert 
 	
-	alertTimout0 = setTimeout(deleteAlert, 10000);		// after 10 sec, clear alert
-	alertTimout1 =setTimeout(missedAlert , 10000);	// after 10 sec, change event status
-	setTimeout(eventDriver, 10000);		// after 10 sec, star eventDriver back up 
+	alertTimout0 = setTimeout(deleteAlert, ALERT_LENGTH);		// after 10 sec, clear alert
+	alertTimout1 =setTimeout(missedEvent , ALERT_LENGTH);	// after 10 sec, change event status
+	setTimeout(eventDriver, ALERT_LENGTH);		// after 10 sec, star eventDriver back up 
 	
 }
 
@@ -84,10 +86,15 @@ function deleteAlert()
 	deleteAlertPopup();
 }
 
-function missedAlert()
-{	  console.log("missedAlert()");
+function missedEvent()
+{	  console.log("missedEvent()");
 	var s = retriveSTORE();
-	s[alertIndex].e_stat = "S_DEACTIVATED";
+	
+	if(s[alertIndex].e_rec != "REC_NONE")
+		s[alertIndex].e_date = procRec(s[alertIndex].e_date, s[alertIndex].e_rec);	
+	else
+		s[alertIndex].e_stat = "S_DEACTIVATED";
+	
 	var point = (-5 * priorityModifier(s[alertIndex].e_priority));
 	s[alertIndex].e_value += 5;
 	
@@ -96,13 +103,21 @@ function missedAlert()
 	addHistory(alertIndex, d, "Alert Missed", point);
 }
 
-function clearAlert()
-{	  console.log("clearAlert()");
+function clearEvent()
+{	  console.log("clearEvent()");
+
 	var s = retriveSTORE();
-	s[alertIndex].e_stat = "S_DEACTIVATED";
+	
+	if(s[alertIndex].e_rec != "REC_NONE")
+		s[alertIndex].e_date = procRec(s[alertIndex].e_date, s[alertIndex].e_rec);	
+	else
+		s[alertIndex].e_stat = "S_DEACTIVATED";
+	
 	var point = (5 * priorityModifier(s[alertIndex].e_priority));
 	s[alertIndex].e_value += point;
 	updateSTORE( s );
+	
+	
 	var d = new Date();
 	addHistory(alertIndex, d, "Cleared Alert", point);
 	
@@ -112,15 +127,10 @@ function clearAlert()
 	deleteAlert();
 }
 
-function earlyAlert( i )
-{	  console.log("earlyAlert()");
+function earlyEvent( i )
+{	  console.log("earlyEvent()");
 	var s = retriveSTORE();
 	s[i].e_stat = "S_DEACTIVATED";
-	
-	if(s[i].e_rec != "REC_NONE")
-	{
-										//currently working on
-	}
 	
 	var point = (10 * priorityModifier(s[i].e_priority) );
 	s[i].e_value += point;
@@ -133,18 +143,16 @@ function earlyAlert( i )
 function addHistory( i, date,  log, value ) //uses index
 {	  console.log("addHistory()");
 	var s = retriveSTORE();
+	
 	var h = {
 		h_date:		date,
 		h_log:		log,
 		h_val:		value
 	};
-	//var ha = [h];
-	//var currHis = s[i].e_history;
+
 	s[i].e_history.push( h );
-	//s[i].e_history[1] = h;
-	//alert(s[i].e_history[1].h_date);
-	//s[i].e_history = new Array();
-	updateSTORE( s );	//why the good cuk is this not updating there????
+
+	updateSTORE( s );
 }
 
 
@@ -194,12 +202,10 @@ function createAlertPopup(name, desc, date)
 								desc+ '<br>' +
 								getDateString(date)	+ '<br>';
 	aPop.setAttribute('class', 'alertPopupON');	//make visible 
-	aPop.innerHTML += "<button onclick='clearAlert()'>Done</button>";
+	aPop.innerHTML += "<button onclick='clearEvent()'>Done</button>";
 	alertStatus = true;
-							
-	//aPop.innerHTML += "<button onclick='clearEventAlert(" + id + ")'> Finished </button>";
-	//aPop.setAttribute('class', 'alertPopupON');
 }
+
 function deleteAlertPopup()
 {	  console.log("deleteAlertPopup()");
 	var aPop = document.getElementById("alertPopup");
@@ -207,6 +213,7 @@ function deleteAlertPopup()
 	aPop.setAttribute('class', 'hidden');
 	alertStatus = false;
 }
+
 function getDateString( date )
 {	
 	var r = (Number(date.getMonth()) + 1) + "/" + (Number(date.getDate())  + 1)+"/" + date.getFullYear() + "<br>";
@@ -223,11 +230,11 @@ function getDateString( date )
 // compare 2 Date objects up till minutes
 function isMatchingTime(currDate, date )
 {
-	if(	currDate.getFullYear() 	== date.getFullYear() && 	
-				currDate.getMonth() 	== date.getMonth() &&
-				currDate.getDay()		== date.getDay() &&
-				currDate.getHours()		== date.getHours() &&
-				currDate.getMinutes()	== date.getMinutes() )
+	if(			currDate.getFullYear() 	=== date.getFullYear() && 	
+				currDate.getMonth() 	=== date.getMonth() &&
+				currDate.getDay()		=== date.getDay() &&
+				currDate.getHours()		=== date.getHours() &&
+				currDate.getMinutes()	=== date.getMinutes() )
 		return true;
 	return false;
 }
