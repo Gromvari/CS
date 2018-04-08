@@ -121,6 +121,12 @@ function createReminder ( name, desc, date, alert, pri, stat, rec)
 	   console.log( "Creating reminder" );
 	   console.log( eventObj );
 	putStore( eventObj );
+	
+	var xhttp = new XMLHttpRequest();				//send to server 
+	xhttp.open("GET", 'http://localhost:8080/', true);
+	xhttp.setRequestHeader('Content-Type', 'application/json');
+	xhttp.send( JSON.stringify( eventObj ) );
+	
 }
 
 function editReminder(id, name, desc, date, alert, pri, stat, rec)
