@@ -252,4 +252,15 @@ function isMatchingTime(currDate, date )
 		return true;
 	return false;
 }
+
+function retriveSTORE()
+{
+	return JSON.parse(sessionStorage.getItem("STORE"));
+}
+
+function updateSTORE( s )
+{
+	  console.log("storing an object");
+	sessionStorage.setItem("STORE", JSON.stringify(s));
+}
 //}

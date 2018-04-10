@@ -1,13 +1,19 @@
 var HOSTNAME = "127.0.0.1";
 var PORT = 3000;
+var xhr = new XMLHttpRequest();
+
 
 function contactServer()
 {
-	var xhr = new XMLHttpRequest();				//send to server 
-	var url = "http://127.0.0.1:3000";
+	var exJSON = {
+		'name': 'Kevin',
+		'number': 9
+	};
+	
 	xhr.open("POST", "http://" + HOSTNAME +":"+ PORT, true);
 	xhr.setRequestHeader('Content-Type', 'text/plain');
-	xhr.send("lol"); 
+	xhr.send( JSON.stringify(exJSON)); 
+	  console.log(JSON.stringify(exJSON));
 }
 
 
@@ -138,11 +144,11 @@ function createReminder ( name, desc, date, alert, pri, stat, rec)
 	   console.log( eventObj );
 	putStore( eventObj );
 	
-	var xhr = new XMLHttpRequest();				//send to server 
-	var url = "http://127.0.0.1:3000";
-	xhr.open("POST", url, true);
-	xhr.setRequestHeader('Content-Type', 'application/json');
-	xhr.send( "eventObj_HERE" );
+
+	xhr.open("POST", "http://" + HOSTNAME +":"+ PORT, true);
+	xhr.setRequestHeader('Content-Type', 'text/plain');
+	xhr.send( JSON.stringify(eventObj)); 
+	  console.log(JSON.stringify(eventObj));
 	
 }
 

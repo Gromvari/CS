@@ -1,11 +1,20 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const fs = require('fs');
+
 const app = express();
 const textParser = bodyParser.text();
-
+const jsonParser = bodyParser.json();
 
 app.post('/', textParser, function (req, res) {
-	console.log("I just got touched OwO" + req.body);
+	
+	console.log("I just got touched OwO ");
+	var wrt = req.body + "\r\n";
+	fs.appendFile('schedule.txt', wrt, function (err) {
+		if(err) throw err;
+		console.log('schedule updated');
+	});
+	
 	
 })
 
