@@ -1,6 +1,19 @@
 var HOSTNAME = "127.0.0.1";
 var PORT = 3000;
 
+function contactServer()
+{
+	var xhr = new XMLHttpRequest();				//send to server 
+	var url = "http://127.0.0.1:3000";
+	xhr.open("POST", "http://" + HOSTNAME +":"+ PORT, true);
+	xhr.setRequestHeader('Content-Type', 'text/plain');
+	xhr.send("lol"); 
+}
+
+
+
+
+
 function initEventManager()
 {
 	if(!sessionStorage.getItem("IDCOUNTER"))
