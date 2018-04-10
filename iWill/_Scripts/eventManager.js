@@ -1,3 +1,6 @@
+var HOSTNAME = "127.0.0.1";
+var PORT = 3000;
+
 function initEventManager()
 {
 	if(!sessionStorage.getItem("IDCOUNTER"))
@@ -122,10 +125,11 @@ function createReminder ( name, desc, date, alert, pri, stat, rec)
 	   console.log( eventObj );
 	putStore( eventObj );
 	
-	var xhttp = new XMLHttpRequest();				//send to server 
-	xhttp.open("GET", 'http://localhost:8080/', true);
-	xhttp.setRequestHeader('Content-Type', 'application/json');
-	xhttp.send( JSON.stringify( eventObj ) );
+	var xhr = new XMLHttpRequest();				//send to server 
+	var url = "http://127.0.0.1:3000";
+	xhr.open("POST", url, true);
+	xhr.setRequestHeader('Content-Type', 'application/json');
+	xhr.send( "eventObj_HERE" );
 	
 }
 
