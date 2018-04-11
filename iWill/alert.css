@@ -8,9 +8,13 @@
 	height: 200px;
 	width: 200px;
 	background-color: Green;
+	
+	transition-duration: 0.5s;
 }
 .hidden {
 	visibility: hidden;
 	width: 0;
 	height: 0;
+	
+	transition-duration: 0.5s;
 }

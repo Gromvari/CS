@@ -2,31 +2,52 @@
 	font-family: "Lucida Console", Monospace, monospace;
 }
 
-body {
-    background-color: gray;
-	/background-image: url("background1.jpg"); 
-	background-repeat: no-repeat; 
-}
+
 #body {
 	position: absolute;
-	/* background-image: url("background1.jpg"); */
-	background-color: gray;
+	background-color: #b3b3b3;
 	width: 85%;
 	height: 90%;
-	
+	padding-top: 20px;
+	padding-left: 20px;
+	left: 15%;
+	top: 10%;
 }
-a{
-	text-decoration: none;
+#header {
+	margin-left: 2%;
 }
-a:visited {
-	color: black;
+#globalClock {
+	text-align: center;
+	font-size: 3em;
+	position: fixed; 
+	top: 0;
+	right: 0;
+	width: 300px;
+	border: 3px solid black;
 }
-
-a:hover {
-	color: red;
+#viewChoiceBar {
+	position: fixed;
+	background-color: Gray;
+	top: 200px;
+	width: 15%;
+	height: 100%;
+	top: 10%;
+	left: 0;
 }
-a:active {
-	color: blue;
+#banner {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	width: 100%;
+	height: 10%;
+	background-color: Gray;
+	border-bottom: 3px black solid;
+	z-index: 10;
+}
+#viewGraph {
+	border: 1px solid black;
+	background-color: white;
 }
 
 table, thead, td {
@@ -41,46 +62,25 @@ button.editEventButton {
 	background-color: red;
 }
 
-#globalClock {
-	text-align: center;
-	font-size: 3em;
-	position: fixed; 
-	top: 0;
-	right: 0;
-	width: 300px;
-	border: 3px solid black;
-}
-
-#viewChoiceBar {
-	position: fixed;
-	background-color: DarkBlue;
-	top: 200px;
-	width: 15%;
-	height: 100%;
-	top: 10%;
-	left: 0;
-}
-
-.banner {
-	position: fixed;
-	top: 0;
-	left: 0;
-	right: 0;
-	width: 100%;
-	height: 10%;
-	background-color: DarkBlue;
-	border-bottom: 3px black solid;
-	z-index: 10;
-}
-
 .addField {
 	width: 500px;
 }
+
 .demoButton {
 	width: 100px;
+	background-color: #555555; color: white;
+	padding: 5px 5px;
+	
+}
+.demoButton:hover {
+	transition-duration: 0.4s;
+	cursor: pointer;
+	background-color: #b3b3b3; color: black;
+	border-color: black;
+	
 }
 .TimeField {
-	background-color: Gray;
+	background-color: #b3b3b3;
 }
 .char2 {
 	width: 2em;
@@ -90,11 +90,16 @@ button.editEventButton {
 	width: 4em;
 	text-align: center;
 }
-
-/* 
-table {
-	width: 800px;
-} */
+.w40 {
+	width: 200px;
+}
+.center {
+	position: relative;
+	margin: auto;
+	width: 50%;
+	top: 10px;
+	
+}
 
 input {
 	border-style: hidden;

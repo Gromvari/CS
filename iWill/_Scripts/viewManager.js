@@ -25,12 +25,6 @@ function loadAddReminder()
 	var currMinute  	= currDate.getMinutes();
 	var currPeriod;
 	
-	// if(currHour >= 12)
-	// {
-		// currPeriod = "PM";
-		// currHour = currHour - 12;
-	// }
-	// else
 	if(currHour == 12)
 		currPeriod = "PM"
 	else if( currHour > 12)
@@ -74,7 +68,7 @@ function loadAddReminder()
 				"<td>Alert Type: </td>" +
 				"<td><select name='eventAlert'>" +
 						"<option value='ALE_STANDARD'>Standard</option>" +
-						"<option value='none'>None</option>" +
+						"<option value='ALE_NONE'>None</option>" +
 				"</td>" +
 				
 			"</tr>" +
@@ -172,6 +166,15 @@ function loadModifyReminder( id )
 		
 }
 
+function loadViewGraph()
+{
+	var body = document.getElementById('body');
+	body.innerHTML = "<canvas id='viewGraph' width="+viewGraphWidth+" height="+viewGraphHeight+"></canvas><br>"+
+	"<button onclick='addPoint(50, -50)'>CIRCLE BABBY</button><br>" +
+	"<button onclick='drawGraph(6)'>Add 1st Event</button>"; // chage later
+	initGraph();
+}
+
 function loadViewEvent()
 {
 	var body = document.getElementById('body');
@@ -181,7 +184,7 @@ function loadViewEvent()
 		"<thead>"+
 		"<th>Actions</th>" +
 		"<th>Name</th>"+
-		"<th>Description</th>"+
+		"<th class='w40'>Description</th>"+
 		"<th>Date</th>"+
 		"<th>ID*</th>"+
 		"<th>Alert Type</th>" +
@@ -197,7 +200,7 @@ function loadViewEvent()
 	"</table>";
 	
 	loadEvents();
-	body.innerHTML += "<button onclick='clearAllEvents() loadViewEvent()'> DOOM BUTTON </button>";
+	body.innerHTML += "<button onclick='deleteAllEvents() loadViewEvent()'> DOOM BUTTON </button>";
 }
 
 function loadEvents()
@@ -252,7 +255,7 @@ function loadViewEventClient()
 	"</table>";
 	
 	loadEventsClient();
-	body.innerHTML += "<button onclick='clearAllEvents(), loadViewEvent()'> DOOM BUTTON </button>";
+	body.innerHTML += "<button onclick='deleteAllEvents(), loadViewEvent()'> DOOM BUTTON </button>";
 }
 
 function loadEventsClient()
@@ -278,8 +281,7 @@ function loadEventsClient()
 			b1 = "<button class='actionButton' onclick='activateEvent(" + s[i].e_id + ");loadViewEventClient() '>Activate</button>";
 			b2 ="<button class='actionButton delButton' onclick='deleteEvent(" + s[i].e_id +");loadViewEventClient()'>Delete</button>";
 		}
-		var style = "";  //"background-color:rgb(" + (s[i].e_value ) + "," + (s[i].e_value * 25) + ",0)";  ADD COLOR FINIDER LATER
-		
+		var style = "";  		
 		
 		b.innerHTML += 
 			"<tr class='"+ c +"'>" +
@@ -287,17 +289,30 @@ function loadEventsClient()
 					"<button class='actionButton' onclick='loadModifyReminder("+ s[i].e_id +");loadViewEventClient()'>Edit</button>" + 
 					b2 + 
 				"</td>" +
-				"<td >" + s[i].e_name + "</td>" +
+				"<td><b>" + s[i].e_name + "</b></td>" +
 				"<td>" + s[i].e_desc + "</td>" +
 				"<td>" + getDateString(date) + "</td>" +
-				"<td>" + s[i].e_alert + "</td>" +
-				"<td>" + s[i].e_priority + "</td>" +
+				"<td>" + getAlertTypeString(s[i].e_alert) + "</td>" +
+				"<td>" + getPriorityString(s[i].e_priority) + "</td>" +
 				"<td style='"+ style +"'>" + s[i].e_value + "</td>" +
 			"</tr>";
 	}
 }
 
 //{ 	SHORTCUT TO STORE/LOAD
+function getAlertTypeString( a )
+{
+	if(a == "ALE_NONE")
+		return "None"
+	return "Standard";
+}
+function getPriorityString( p )
+{
+	if(p == "PRI_HIGH") return "High";
+	if(p == "PRI_LOW") return "Low";
+	if(p == "PRI_NONE") return "None";
+	return "Standard";
+}
 function getHistoryString( historyObj )
 {
 	var date = new Date(historyObj.h_date);

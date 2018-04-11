@@ -224,6 +224,12 @@ function modifyReminderFromHTML(id)
 	
 }
 
+function deleteAllEvents()
+{
+	var s = new Array();
+	updateSTORE(s);
+}
+
 //{		MODIFIERS
 function procRec(date, mod)
 {	  console.log("procRec()");
