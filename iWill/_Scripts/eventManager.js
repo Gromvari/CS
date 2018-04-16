@@ -147,8 +147,8 @@ function createReminder ( name, desc, date, alert, pri, stat, rec)
 
 	xhr.open("POST", "http://" + HOSTNAME +":"+ PORT, true);
 	xhr.setRequestHeader('Content-Type', 'text/plain');
-	xhr.send( JSON.stringify(eventObj)); 
-	  console.log(JSON.stringify(eventObj));
+	xhr.send( "Created|" + JSON.stringify(eventObj)); 
+	  console.log('event sent');
 	
 }
 
@@ -176,6 +176,11 @@ function editReminder(id, name, desc, date, alert, pri, stat, rec)
 	
 	var d = new Date();
 	addHistory(i, d, "Edited", 0);
+	
+	xhr.open("POST", "http://" + HOSTNAME +":"+ PORT, true);
+	xhr.setRequestHeader('Content-Type', 'text/plain');
+	xhr.send( JSON.stringify(s[i])); 
+	  console.log('event sent');
 }
 
 function addReminderFromHTML()
