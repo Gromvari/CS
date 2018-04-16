@@ -3,6 +3,7 @@
 const express =		require('express');
 const bodyParser = 	require('body-parser');
 const fs = 			require('fs');
+const readLine =	require('readline');
 
 const saveName = 'schedule.txt';
 var s = new Array();
@@ -64,14 +65,20 @@ function proccessBody( r )
 		 var index = findID(bJSON.e_id);
 		 if(index != -1)
 		 {
-			 s.splice(index, 1); //??
+			 s.splice(index, 1); 
+			 
+			 //read file on  by one, delete line with matcin id 
+			 // var rl = readLine.createInterface({
+				 // input: fs.createReadStream()
+			 }
+			 )
 		 }
 	 }
 	 
 	 
 }
 
-function findID( id)
+function findID(id)
 {
 	for(i = 0; i < s.length; i++)
 	{

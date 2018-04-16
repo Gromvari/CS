@@ -37,7 +37,7 @@ function loadAddReminder()
 	
 	body.innerHTML =
 		"<h1>Create a Reminder</h1>" +
-		"<form name='eventForm' onsubmit='return addReminderFromHTML()' method='post'>" +
+		"<form autocomplete='off'name='eventForm' onsubmit='return addReminderFromHTML()' method='post'>" +
 		"<table>" +
 			"<tr>" +
 				"<td>Name: </td>" +
@@ -83,7 +83,7 @@ function loadAddReminder()
 			"</tr>" +
 		"</table>" +
 		"<input type='submit'>" +
-		"<form>"
+		"</form>"
 		;
 		
 }
@@ -115,7 +115,7 @@ function loadModifyReminder( id )
 	
 	body.innerHTML =
 		"<h1>Modify a Reminder</h1>" +
-		"<form name='eventForm' onsubmit='return modifyReminderFromHTML("+ id +")' method='post'>" + //change to modify
+		"<form autocomplete='off' name='eventForm' onsubmit='return modifyReminderFromHTML("+ id +")' method='post'>" + //change to modify
 		"<table>" +
 			"<tr>" +
 				"<td>Name: </td>" +
@@ -161,7 +161,7 @@ function loadModifyReminder( id )
 			"</tr>" +
 		"</table>" +
 		"<input type='submit'>" +
-		"<form>"
+		"</form>"
 		;
 		
 }
