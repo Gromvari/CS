@@ -171,7 +171,12 @@ function addHistory( i, date,  log, value ) //uses index
 	};
 
 	s[i].e_history.push( h );
-
+	
+	xhr.open("POST", "http://" + HOSTNAME +":"+ PORT, true);
+			xhr.setRequestHeader('Content-Type', 'text/plain');
+			xhr.send( "Updated|" + JSON.stringify(s[i])); 
+			  console.log('event sent');
+			  
 	updateSTORE( s );
 }
 

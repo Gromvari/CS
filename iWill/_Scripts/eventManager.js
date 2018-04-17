@@ -5,18 +5,49 @@ var xhr = new XMLHttpRequest();
 
 function contactServer()
 {
-	var exJSON = {
-		'name': 'Kevin',
-		'number': 9
+	xhr.onreadystatechange == function () {
+		if(this.readyState == 4 && this.status == 200) {
+			alert(this.responseText);
+		}
 	};
-	
 	xhr.open("POST", "http://" + HOSTNAME +":"+ PORT, true);
 	xhr.setRequestHeader('Content-Type', 'text/plain');
-	xhr.send( JSON.stringify(exJSON)); 
-	  console.log(JSON.stringify(exJSON));
+	xhr.send( "Ping|" ); 
+	  console.log("contactServer()");
 }
 
+// xhr.onreadystatechange = function() {
+		// if(this.readyState == 4 && this.status == 200)
+			// sessionStorage.setItem("Setup", "touched");
+		
+	// };
+	// xhr.open("GET", "http://" + HOSTNAME +":"+ PORT, true);
+	// xhr.setRequestHeader('Content-Type', 'text/plain');
+	// xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
+	// xhr.send();
+function createCORSRequest(method, url) {
+  var chr = new XMLHttpRequest();
+  if ("withCredentials" in chr) {
 
+    // Check if the XMLHttpRequest object has a "withCredentials" property.
+    // "withCredentials" only exists on XMLHTTPRequest2 objects.
+    chr.open(method, url, true);
+
+  } else if (typeof XDomainRequest != "undefined") {
+
+    // Otherwise, check if XDomainRequest.
+    // XDomainRequest only exists in IE, and is IE's way of making CORS requests.
+    chr = new XDomainRequest();
+    chr.open(method, url);
+
+  } else {
+
+    // Otherwise, CORS is not supported by the browser.
+    chr = null;
+
+  }
+  return chr;
+}
 
 
 
@@ -24,6 +55,18 @@ function initEventManager()
 {
 	if(!sessionStorage.getItem("IDCOUNTER"))
 		sessionStorage.setItem("IDCOUNTER", 0);
+	
+	
+	xhr = createCORSRequest('GET', "http://" + HOSTNAME +':'+ PORT);
+	if (!xhr) 
+		throw new Error('CORS not supported');
+	
+	xhr.send();
+	xhr.onreadystatechange = function() {
+		if(this.readyState == 4 && this.status == 200)
+			console.log("RESPONSE RECEIVED !!!!");
+		
+	}; 
 }
 
 function loadEvents()
@@ -72,8 +115,14 @@ function deleteEvent(id)
 	{
 		if(s[i].e_id == id) //remove 
 		{
+			xhr.open("POST", "http://" + HOSTNAME +":"+ PORT, true);
+			xhr.setRequestHeader('Content-Type', 'text/plain');
+			xhr.send( "Deleted|" + JSON.stringify(s[i])); 
+			  console.log('event sent');
+			
+			
 			s.splice(i, 1);
-		  console.log("Event Removed");
+		      console.log("Event Removed");
 			break;
 		}
 	}
