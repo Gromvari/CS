@@ -25,6 +25,7 @@ function addPoint(x, y)
 function drawGraph( id )
 {
 	var s = retriveSTORE();
+	
 	var i = getIndex( id );
-	addPoint( 50, s[i].e_value);
+	addPoint( 50, s[0].e_value);
 }

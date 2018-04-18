@@ -36,7 +36,7 @@ app.post('/', textParser, function (req, res) {
 app.get('/', textParser, (req, res) => {
 	console.log("Server contacted via GET");
 	res.writeHead(200, {'Content-Type': 'text/plain','Access-Control-Allow-Origin':'*'});
-	res.write("lol");
+	res.write(JSON.stringify(s));
 	res.end();
 });
 

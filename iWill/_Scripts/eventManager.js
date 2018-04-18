@@ -16,37 +16,27 @@ function contactServer()
 	  console.log("contactServer()");
 }
 
-// xhr.onreadystatechange = function() {
-		// if(this.readyState == 4 && this.status == 200)
-			// sessionStorage.setItem("Setup", "touched");
-		
-	// };
-	// xhr.open("GET", "http://" + HOSTNAME +":"+ PORT, true);
-	// xhr.setRequestHeader('Content-Type', 'text/plain');
-	// xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
-	// xhr.send();
 function createCORSRequest(method, url) {
-  var chr = new XMLHttpRequest();
-  if ("withCredentials" in chr) {
-
+	
+	var chr = new XMLHttpRequest();
+	
+	if ("withCredentials" in chr) {
     // Check if the XMLHttpRequest object has a "withCredentials" property.
     // "withCredentials" only exists on XMLHTTPRequest2 objects.
-    chr.open(method, url, true);
-
-  } else if (typeof XDomainRequest != "undefined") {
-
+		chr.open(method, url, true);
+	} 
+	else if(typeof XDomainRequest != "undefined") {
     // Otherwise, check if XDomainRequest.
     // XDomainRequest only exists in IE, and is IE's way of making CORS requests.
-    chr = new XDomainRequest();
-    chr.open(method, url);
-
-  } else {
-
-    // Otherwise, CORS is not supported by the browser.
-    chr = null;
-
-  }
-  return chr;
+		chr = new XDomainRequest();
+		chr.open(method, url);
+	} 
+	else {
+	// Otherwise, CORS is not supported by the browser.
+		chr = null;
+	}
+	
+	return chr;
 }
 
 
@@ -58,14 +48,15 @@ function initEventManager()
 	
 	
 	xhr = createCORSRequest('GET', "http://" + HOSTNAME +':'+ PORT);
-	if (!xhr) 
-		throw new Error('CORS not supported');
+	if (!xhr) throw new Error('CORS not supported');
 	
 	xhr.send();
+	
 	xhr.onreadystatechange = function() {
-		if(this.readyState == 4 && this.status == 200)
-			console.log("RESPONSE RECEIVED !!!!");
-		
+		if(this.readyState == 4 && this.status == 200) {
+			updateSTORE(JSON.parse(xhr.responseText));
+			console.log("Store has been fetched from server");
+		}
 	}; 
 }
 
