@@ -171,7 +171,7 @@ function loadViewGraph()
 	var body = document.getElementById('body');
 	body.innerHTML = "<canvas id='viewGraph' width="+viewGraphWidth+" height="+viewGraphHeight+"></canvas><br>"+
 	"<button onclick='addPoint(50, -50)'>CIRCLE BABBY</button><br>" +
-	"<button onclick='drawGraph(6)'>Add 1st Event</button>"; // chage later
+	"<button onclick='drawEvent()'>Draw 1st event</button>"; // chage later
 	initGraph();
 }
 

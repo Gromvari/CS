@@ -17,7 +17,7 @@ function globalClock(){
 	}
 	
 	document.getElementById("globalClock").innerHTML =
-	h + ":" + m + ":" + s + p;
+	"<span class='centered'>" +h + ":" + m + ":" + s + p+"</span>";
 	var t = setTimeout(globalClock, 1000);
 }
 function checkTime(i) {
