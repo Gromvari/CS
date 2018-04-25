@@ -169,16 +169,46 @@ function loadModifyReminder( id )
 function loadViewGraph()
 {
 	var body = document.getElementById('body');
-	body.innerHTML = "<canvas id='viewGraph' width="+viewGraphWidth+" height="+viewGraphHeight+"></canvas><br>"+
+	body.innerHTML = "<h2> Progress </h2>" + 
+	"Show: <select id='viewGraphNameList' onchange='redrawGraph()'> " + 
+			getViewGraphNameList() + 
+		"</select> Period:<select id='viewGraphPeriodList'>" +
+			"<option value='D'>Today</option>" +
+			"<option value='W'>Week</option>" +
+		"</select><br>" +
+	"<canvas id='viewGraph' width="+viewGraphWidth+" height="+viewGraphHeight+"></canvas><br>"+
 	"<button onclick='addPoint(50, -50)'>CIRCLE BABBY</button><br>" +
-	"<button onclick='drawEvent()'>Draw 1st event</button>"; // chage later
+	"<button onclick='clearGraph()'>Clear Graph</button>";
 	initGraph();
+	drawFirstEvent();
+}
+
+function getViewGraphNameList()
+{
+	var s = retriveSTORE();
+	var str = ''; 
+	if(s != null)
+	for(i = 0; i < s.length; i++)
+	{
+		str += "<option value='" + s[i].e_id + "'>" + s[i].e_name + "</option>";
+	}
+	return str;
+}
+
+function redrawGraph() 
+{
+	var a = document.getElementById('viewGraphNameList').value;
+	drawEvent( a );
+}
+function consolePing()
+{
+	console.log('Ping!');
 }
 
 function loadViewEvent()
 {
 	var body = document.getElementById('body');
-	body.innerHTML +=
+	body.innerHTML =
 	"<h1>View</h1>" +
 	"<table id='eventTable'>"+
 		"<thead>"+
@@ -207,6 +237,7 @@ function loadEvents()
 {
 	var s = retriveSTORE();
 	var b = document.getElementById("eventTable");
+	if( s != null)
 	for (i = 0; i < s.length; i++)
 	{
 		var date = new Date(s[i].e_date);
@@ -262,6 +293,7 @@ function loadEventsClient()
 {
 	var s = retriveSTORE();
 	var b = document.getElementById("eventTable");
+	if( s != null)
 	for (i = 0; i < s.length; i++)
 	{
 		var date = new Date(s[i].e_date);
