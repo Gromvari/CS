@@ -1,4 +1,4 @@
-var HOSTNAME = "127.0.0.1";
+var HOSTNAME = "152.10.252.94";
 var PORT = 3000;
 var xhr = new XMLHttpRequest();
 
