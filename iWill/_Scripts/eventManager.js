@@ -1,4 +1,4 @@
-var HOSTNAME = "152.10.252.94";
+var HOSTNAME = "10.101.249.125";
 var PORT = 3000;
 var xhr = new XMLHttpRequest();
 
@@ -10,7 +10,7 @@ function contactServer()
 			alert(this.responseText);
 		}
 	};
-	xhr.open("POST", "http://" + HOSTNAME +":"+ PORT, true);
+	xhr.open("POST", "http://" + HOSTNAME +":"+ PORT +"/jst", true);
 	xhr.setRequestHeader('Content-Type', 'text/plain');
 	xhr.send( "Ping|" ); 
 	  console.log("contactServer()");
@@ -47,7 +47,7 @@ function initEventManager()
 		sessionStorage.setItem("IDCOUNTER", 0);
 	
 	
-	xhr = createCORSRequest('GET', "http://" + HOSTNAME +':'+ PORT);
+	xhr = createCORSRequest('GET', "http://" + HOSTNAME +':'+ PORT +"/jst");
 	if (!xhr) throw new Error('CORS not supported');
 	
 	xhr.send();
@@ -106,7 +106,7 @@ function deleteEvent(id)
 	{
 		if(s[i].e_id == id) //remove 
 		{
-			xhr.open("POST", "http://" + HOSTNAME +":"+ PORT, true);
+			xhr.open("POST", "http://" + HOSTNAME +":"+ PORT +"/jst", true);
 			xhr.setRequestHeader('Content-Type', 'text/plain');
 			xhr.send( "Deleted|" + JSON.stringify(s[i])); 
 			  console.log('event sent');
@@ -185,7 +185,7 @@ function createReminder ( name, desc, date, alert, pri, stat, rec)
 	putStore( eventObj );
 	
 
-	xhr.open("POST", "http://" + HOSTNAME +":"+ PORT, true);
+	xhr.open("POST", "http://" + HOSTNAME +":"+ PORT +"/jst", true);
 	xhr.setRequestHeader('Content-Type', 'text/plain');
 	xhr.send( "Created|" + JSON.stringify(eventObj)); 
 	  console.log('event sent');
@@ -217,7 +217,7 @@ function editReminder(id, name, desc, date, alert, pri, stat, rec)
 	var d = new Date();
 	addHistory(i, d, "Edited", 0);
 	
-	xhr.open("POST", "http://" + HOSTNAME +":"+ PORT, true);
+	xhr.open("POST", "http://" + HOSTNAME +":"+ PORT +"/jst", true);
 	xhr.setRequestHeader('Content-Type', 'text/plain');
 	xhr.send( JSON.stringify(s[i])); 
 	  console.log('event sent');

@@ -38,7 +38,7 @@ const lserver = login.listen(8888, '10.101.249.125', () => {
 });
 
 
-app.post('/', textParser, function (req, res) {
+app.post('/jst', textParser, function (req, res) {
 	
 	console.log("Server contacted ");
 	
@@ -54,6 +54,167 @@ app.get('/', textParser, (req, res) => {
 	res.end();
 });
 
+app.get('/jst', textParser, (req, res) => {
+	
+	if(validatedIP.indexOf(req.connection.remoteAddress) != -1)
+	{
+		fs.readFile('../JST.html', 'utf8', (err, data) => {
+			res.writeHead(200, {'Content-Type' : 'text/html'});
+			res.write(data);
+			res.end();
+		});
+	}
+	else
+	{
+		deny( res );
+	}
+});
+
+//{SERVING : JS
+app.get('/_Scripts/viewManager.js', (req, res) => {
+	if(validatedIP.indexOf(req.connection.remoteAddress) != -1)
+	{
+	console.log("Serving viewManager.js");
+		fs.readFile('../_Scripts/viewManager.js', 'utf8', (err, data) => {
+			res.writeHead(200, {'Content-Type' : 'text/javascript'});
+			res.write(data);
+			res.end();
+		});
+	}
+	else
+	{
+		deny( res );
+	}
+});
+app.get('/_Scripts/alertManager.js', (req, res) => {
+	if(validatedIP.indexOf(req.connection.remoteAddress) != -1)
+	{
+	console.log("Serving alertManager.js");
+		fs.readFile('../_Scripts/alertManager.js', 'utf8', (err, data) => {
+			res.writeHead(200, {'Content-Type' : 'text/javascript'});
+			res.write(data);
+			res.end();
+		});
+	}
+	else
+	{
+		deny( res );
+	}
+});
+app.get('/_Scripts/eventManager.js', (req, res) => {
+	if(validatedIP.indexOf(req.connection.remoteAddress) != -1)
+	{
+	console.log("Serving eventManager.js");
+		fs.readFile('../_Scripts/eventManager.js', 'utf8', (err, data) => {
+			res.writeHead(200, {'Content-Type' : 'text/javascript'});
+			res.write(data);
+			res.end();
+		});
+	}
+	else
+	{
+		deny( res );
+	}
+});
+app.get('/_Scripts/global.js', (req, res) => {
+	if(validatedIP.indexOf(req.connection.remoteAddress) != -1)
+	{
+	console.log("Serving global.js");
+		fs.readFile('../_Scripts/global.js', 'utf8', (err, data) => {
+			res.writeHead(200, {'Content-Type' : 'text/javascript'});
+			res.write(data);
+			res.end();
+		});
+	}
+	else
+	{
+		deny( res );
+	}
+});
+app.get('/_Scripts/graphManager.js', (req, res) => {
+	if(validatedIP.indexOf(req.connection.remoteAddress) != -1)
+	{
+	console.log("Serving graphManager.js");
+		fs.readFile('../_Scripts/graphManager.js', 'utf8', (err, data) => {
+			res.writeHead(200, {'Content-Type' : 'text/javascript'});
+			res.write(data);
+			res.end();
+		});
+	}
+	else
+	{
+		deny( res );
+	}
+});
+//}
+
+//{SERVING : CSS
+app.get('/standard.css', (req, res) => {
+	if(validatedIP.indexOf(req.connection.remoteAddress) != -1)
+	{
+	console.log("Serving standard.css");
+		fs.readFile('../standard.css', 'utf8', (err, data) => {
+			res.writeHead(200, {'Content-Type' : 'text/css'});
+			res.write(data);
+			res.end();
+		});
+	}
+	else
+	{
+		deny( res );
+	}
+});
+app.get('/alert.css', (req, res) => {
+	if(validatedIP.indexOf(req.connection.remoteAddress) != -1)
+	{
+	console.log("Serving alert.css");
+		fs.readFile('../alert.css', 'utf8', (err, data) => {
+			res.writeHead(200, {'Content-Type' : 'text/css'});
+			res.write(data);
+			res.end();
+		});
+	}
+	else
+	{
+		deny( res );
+	}
+});
+app.get('/view.css', (req, res) => {
+	if(validatedIP.indexOf(req.connection.remoteAddress) != -1)
+	{
+	console.log("Serving view.css");
+		fs.readFile('../view.css', 'utf8', (err, data) => {
+			res.writeHead(200, {'Content-Type' : 'text/css'});
+			res.write(data);
+			res.end();
+		});
+	}
+	else
+	{
+		deny( res );
+	}
+});
+//}
+
+//{SERVING : OTHER
+app.get('/_Sounds/alertPing.mp3', textParser, (req, res) => {
+	
+	if(validatedIP.indexOf(req.connection.remoteAddress) != -1)
+	{
+		fs.readFile('../_Sounds/alertPing.mp3', 'binary', (err, data) => {
+			res.writeHead(200, {'Content-Type' : 'audio/mpeg'});
+			res.write(data);
+			res.end();
+		});
+	}
+	else
+	{
+		deny( res );
+	}
+});
+//}
+
+//{LOGIN
 login.post('/login', formParser,(req, res) => {
 	console.log("\nLogin Attempt");
 	console.log("Login Credentials");
@@ -71,7 +232,7 @@ login.post('/login', formParser,(req, res) => {
 				console.log("Correct Login");
 				console.log("Added User: " + req.connection.remoteAddress + "\n");
 				validatedIP.push(req.connection.remoteAddress);
-				res.writeHead(301, {'Location' : 'https://whynogod.files.wordpress.com/2011/01/d4hbs.png?w=640'});
+				res.writeHead(301, {'Location' : 'http://10.101.249.125:3000/jst'});//'https://whynogod.files.wordpress.com/2011/01/d4hbs.png?w=640'});
 				res.end();
 			}
 
@@ -104,9 +265,16 @@ login.get('/login.css', textParser, (req, res) => {
 		res.end();
 	});
 });
+//}
 
-
-//{
+//{HELPER FUNCTIONS
+	
+function deny( res )
+{
+	console.log('\nServer Permission Denied');
+		res.writeHead(403, {'Content-Type': 'text/html'});
+		res.end('403: Permission Denied');
+}
 function readSave()
 {
 	fs.readFile(saveName, 'utf8',(err, data) => {   
