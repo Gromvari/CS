@@ -1,10 +1,11 @@
-
+'use strict';
 
 const express =		require('express');
 const bodyParser = 	require('body-parser');
 const fs = 			require('fs');
 const readLine =	require('readline');
 const formidable = 	require('formidable');
+
 
 const saveName = 'schedule.txt';
 
@@ -15,15 +16,24 @@ var club = new Array();
 
 const app = express();
 const login = express();
+const ext = express();
 const textParser = bodyParser.text();
 const formParser = bodyParser.urlencoded({ extended: true });
+
+
+const esl = app.listen(8888, () => {
+	console.log("External active " + esl.address().address + " " + esl.address().port);
+});
+
 
 const server = app.listen(3000, '10.101.249.125', function() {
 	var host = server.address().address;
 	var port = server.address().port;
 	if(host === "::") host = "localHost";
 	console.log("Server listening at http://%s:%s", host, port);
+	
 	readSave();
+	
 });
 
 const lserver = login.listen(8888, '10.101.249.125', () => {
