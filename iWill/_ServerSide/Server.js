@@ -234,7 +234,8 @@ login.post('/login', formParser,(req, res) => {
 	console.log(" Password: " + pw);
 	
 	var ret = false;
-		for(i = 0; i < club.length; i++)
+	var i = 0;
+		for(i; i < club.length; i++)
 		{
 			if( un === club[i].username && pw === club[i].password)
 			{

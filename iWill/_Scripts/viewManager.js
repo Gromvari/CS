@@ -174,7 +174,7 @@ function loadViewGraph()
 	"Show: <select id='viewGraphNameList' onchange='redrawGraph()'> " + 
 			getViewGraphNameList() + 
 		"</select> Period:<select id='viewGraphPeriodList'>" +
-			"<option value='D'>Today</option>" +
+			"<option value='L'>Life</option>" +
 			"<option value='W'>Week</option>" +
 		"</select><br>" +
 	"<canvas id='viewGraph' width="+viewGraphWidth+" height="+viewGraphHeight+"></canvas><br>"+

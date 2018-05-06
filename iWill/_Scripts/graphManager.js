@@ -32,12 +32,7 @@ function drawGraphLine(x, y, m, n)
 {
 	var b = document.getElementById("viewGraph");
 	var btx = b.getContext("2d");
-	btx.beginPath()
-	// btx.moveTo( x, (viewGraphHeight / 2) -y);
-	// btx.lineTo(m, (viewGraphHeight / 2) -n);
-	// btx.lineTo(m, (viewGraphHeight / 2) );
-	// btx.lineTo(x, (viewGraphHeight / 2) );
-	// btx.lineTo(x, (viewGraphHeight / 2) -y);
+	btx.beginPath();
 	btx.moveTo( x, (viewGraphHeight / 2) -y);
 	btx.lineTo(m, (viewGraphHeight / 2) -n);
 	btx.lineTo(m, (viewGraphHeight / 2) );
@@ -69,30 +64,32 @@ function drawFirstEvent()
 }
 function drawEvent( id )
 {	  console.log("drawEvent()");
-	var s = retriveSTORE();
+initGraph();
+	drawLife( id ); //for now just lifetime
+	// var s = retriveSTORE();
 	
-	clearGraph(); 
+	// clearGraph(); 
 	
 	
-	var index  = getIndex( id );
+	// var index  = getIndex( id );
 	
-	var y = 0;
-	var x = 50;
-	//addPoint(x, y); 
-	initGraph();
+	// var y = 0;
+	// var x = 50;
+	// //addPoint(x, y); 
+	// initGraph();
 	
-	  console.log("loop: drawGraphLine()");
-	for(i = 0; i < s[index].e_history.length; i++)
-	{
-		if( s[index].e_history[i].h_log === "Early Finish" || s[index].e_history[i].h_log === "Alert Missed" )
-		{
-			drawGraphLine(x, y, x + 50, y + s[index].e_history[i].h_val);
-			x = x + 50;
-			y = y + s[index].e_history[i].h_val;
-			//addPoint( x, y);
-			addInfo(index);
-		}
-	}
+	  // console.log("loop: drawGraphLine()");
+	// for(i = 0; i < s[index].e_history.length; i++)
+	// {
+		// if( s[index].e_history[i].h_log === "Early Finish" || s[index].e_history[i].h_log === "Alert Missed" )
+		// {
+			// drawGraphLine(x, y, x + 50, y + s[index].e_history[i].h_val);
+			// x = x + 50;
+			// y = y + s[index].e_history[i].h_val;
+			// //addPoint( x, y);
+			// addInfo(index);
+		// }
+	// }
 }
 
 function clearGraph()
