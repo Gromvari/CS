@@ -2,16 +2,17 @@
 
 function loadAddEventDemo()
 {
-	var body = document.getElementById('body');
-	body.innerHTML = 
-		"<table>" +
-			"<tr>" +
-				"<td><button onclick='loadAddReminder()'>Reminder</button></td>" +
-				"<td><button>WORKINPROGRESS</button></td>" +
-				"<td><button>WORKINPROGRESS</button></td>" +
-				"<td><button>WORKINPROGRESS</button></td>" +
-			"</tr>" +
-		"</table>";
+	// var body = document.getElementById('body');
+	// body.innerHTML = 
+		// "<table>" +
+			// "<tr>" +
+				// "<td><button onclick='loadAddReminder()'>Reminder</button></td>" +
+				// "<td><button>WORKINPROGRESS</button></td>" +
+				// "<td><button>WORKINPROGRESS</button></td>" +
+				// "<td><button>WORKINPROGRESS</button></td>" +
+			// "</tr>" +
+		// "</table>";
+		loadAddReminder(); // CHANGIBLE
 }
 
 function loadAddReminder()
@@ -146,7 +147,7 @@ function loadModifyReminder( id )
 				"<td>Alert Type: </td>" +
 				"<td><select name='eventAlert'>" +
 						"<option value='ALE_STANDARD'>Standard</option>" +
-						"<option value='none'>None</option>" +
+						"<option value='ALE_NONE'>None</option>" +
 				"</td>" +
 				
 			"</tr>" +
@@ -177,7 +178,7 @@ function loadViewGraph()
 			"<option value='W'>Week</option>" +
 		"</select><br>" +
 	"<canvas id='viewGraph' width="+viewGraphWidth+" height="+viewGraphHeight+"></canvas><br>"+
-	"<button onclick='addPoint(50, -50)'>CIRCLE BABBY</button><br>" +
+	"<button onclick='addPoint(50, 100)'>CIRCLE BABBY</button><br>" +
 	"<button onclick='clearGraph()'>Clear Graph</button>";
 	initGraph();
 	drawFirstEvent();
@@ -200,6 +201,7 @@ function redrawGraph()
 	var a = document.getElementById('viewGraphNameList').value;
 	drawEvent( a );
 }
+
 function consolePing()
 {
 	console.log('Ping!');
@@ -279,6 +281,7 @@ function loadViewEventClient()
 		"<th>Date</th>"+
 		"<th>Alert Type</th>" +
 		"<th>Priority</th>" +
+		"<th>Recurrance</th>" +
 		"<th>Value</th>" +
 		"</thead>"+
 		"<tbody id='eventTableBody'>"+
@@ -286,7 +289,7 @@ function loadViewEventClient()
 	"</table>";
 	
 	loadEventsClient();
-	body.innerHTML += "<button onclick='deleteAllEvents(), loadViewEvent()'> DOOM BUTTON </button>";
+	//body.innerHTML += "<button onclick='deleteAllEvents(), loadViewEvent()'> DOOM BUTTON </button>"; //REMOVE
 }
 
 function loadEventsClient()
@@ -305,6 +308,7 @@ function loadEventsClient()
 		
 		var c = "";
 		var b1 = "<button class='actionButton' onclick='earlyEvent(" + i + ");loadViewEventClient()'>Finished</button>";
+		var b3 = "<button class='actionButton' onclick='missedEventIndex(" + i + ");loadViewEventClient()'>Missed</button>";
 		var b2 = "<button class='actionButton' onclick='deactivateEvent(" + s[i].e_id +");loadViewEventClient()'>Remove</button>";
 		
 		if(s[i].e_stat == "S_DEACTIVATED")
@@ -312,13 +316,14 @@ function loadEventsClient()
 			c = "deactivated";
 			b1 = "<button class='actionButton' onclick='activateEvent(" + s[i].e_id + ");loadViewEventClient() '>Activate</button>";
 			b2 ="<button class='actionButton delButton' onclick='deleteEvent(" + s[i].e_id +");loadViewEventClient()'>Delete</button>";
+			b3 = '';
 		}
 		var style = "";  		
 		
 		b.innerHTML += 
 			"<tr class='"+ c +"'>" +
-				"<td>" + b1 +"<br>"  +
-					"<button class='actionButton' onclick='loadModifyReminder("+ s[i].e_id +");loadViewEventClient()'>Edit</button>" + 
+				"<td>" + b1   + b3 +"<br>" +
+					"<button class='actionButton' onclick='loadModifyReminder("+ s[i].e_id +")'>Edit</button>" + 
 					b2 + 
 				"</td>" +
 				"<td><b>" + s[i].e_name + "</b></td>" +
@@ -326,24 +331,31 @@ function loadEventsClient()
 				"<td>" + getDateString(date) + "</td>" +
 				"<td>" + getAlertTypeString(s[i].e_alert) + "</td>" +
 				"<td>" + getPriorityString(s[i].e_priority) + "</td>" +
+				"<td>" + getRecuranceString(s[i].e_rec) + "</td>" +
 				"<td style='"+ style +"'>" + s[i].e_value + "</td>" +
 			"</tr>";
 	}
 }
 
-//{ 	SHORTCUT TO STORE/LOAD
+//{ 	Helper Functions
 function getAlertTypeString( a )
 {
-	if(a == "ALE_NONE")
+	if(a === "ALE_NONE")
 		return "None"
 	return "Standard";
 }
 function getPriorityString( p )
 {
-	if(p == "PRI_HIGH") return "High";
-	if(p == "PRI_LOW") return "Low";
-	if(p == "PRI_NONE") return "None";
+	if(p === "PRI_HIGH") return "High";
+	if(p === "PRI_LOW") return "Low";
+	if(p === "PRI_NONE") return "None";
 	return "Standard";
+}
+function getRecuranceString( r )
+{
+	if(r === "REC_WEEKLY") return "Weekly";
+	if(r === "REC_DAYLY") return "Day";
+	return "Never";
 }
 function getHistoryString( historyObj )
 {

@@ -197,21 +197,14 @@ function editReminder(id, name, desc, date, alert, pri, stat, rec)
 	var s = retriveSTORE();
 	var i = getIndex(id);
 
-	
-	if(name)
 		s[i].e_name = name;
-	if(desc)
 		s[i].e_desc = desc;
-	if(date)
 		s[i].e_date = date;
-	if(alert)
 		s[i].e_alert = alert;
-	if(pri)
 		s[i].e_pri = pri;
-	if(stat)
 		s[i].e_stat = stat;
-	if(rec)
 		s[i].e_rec = rec;
+		
 	updateSTORE( s );
 	
 	var d = new Date();
@@ -227,15 +220,15 @@ function addReminderFromHTML()
 {	 console.log("addReminderFromHTML()");
 	var name 			= document.forms["eventForm"]["eventName"].value;
 	var desc 			= document.forms["eventForm"]["eventDesc"].value;
-	var dateMonth 	= document.forms["eventForm"]["eventDateMonth"].value;
+	var dateMonth 		= document.forms["eventForm"]["eventDateMonth"].value;
 	var dateDay 		= document.forms["eventForm"]["eventDateDay"].value;
 	var dateYear 		= document.forms["eventForm"]["eventDateYear"].value;
 	var dateHour 		= document.forms["eventForm"]["eventDateHour"].value;
-	var dateMinute 	= document.forms["eventForm"]["eventDateMinute"].value;
-	var datePeriod 	= document.forms["eventForm"]["eventDatePeriod"].value;
+	var dateMinute 		= document.forms["eventForm"]["eventDateMinute"].value;
+	var datePeriod 		= document.forms["eventForm"]["eventDatePeriod"].value;
 	var alert 			= document.forms["eventForm"]["eventAlert"].value;
-	var rec 				= document.forms["eventForm"]["eventRec"].value;
-	var pri 				= document.forms["eventForm"]["eventPriority"].value;
+	var rec 			= document.forms["eventForm"]["eventRec"].value;
+	var pri 			= document.forms["eventForm"]["eventPriority"].value;
 	
 	if(datePeriod == "PM" && dateHour != 12)
 		dateHour = dateHour - 12;

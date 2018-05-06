@@ -24,7 +24,6 @@ function startDrivers()
 {
 	console.log("Event Driver  Started");
 	eventDriver();
-	//var t = setTimeout( dr, 2000);
 }
 
 function eventDriver()
@@ -55,7 +54,6 @@ function eventDriver()
 	
 }
 
-// create alert, wait/handle alert, restart event driver 
 function processEvent( i )
 {	  console.log("processEvent(" + i + ")");
 	var s = retriveSTORE();
@@ -116,13 +114,37 @@ function missedEvent()
 		s[alertIndex].e_stat = "S_DEACTIVATED";
 	
 	var point = (-5 * priorityModifier(s[alertIndex].e_priority));
-	s[alertIndex].e_value += point;
+	
+	point = s[alertIndex].e_value + point;
+	if(point >= 100)
+		s[alertIndex].e_value = 100;
+	else if(point <= -100)
+		s[alertIndex].e_value = -100;
+	else 
+		s[alertIndex].e_value = point;
 	
 	var d = new Date();
 	updateSTORE( s );
 	addHistory(alertIndex, d, "Alert Missed", point);
 }
-
+function missedEventIndex( i )
+{	  console.log("missedEventIndex()");
+	var s = retriveSTORE();
+	s[i].e_stat = "S_DEACTIVATED";
+	
+	var point = -(10 * priorityModifier(s[i].e_priority) );
+	point = s[i].e_value + point;
+	if(point >= 100)
+		s[i].e_value = 100;
+	else if(point <= -100)
+		s[i].e_value = -100;
+	else 
+		s[i].e_value = point;
+	updateSTORE( s );
+	
+	var d = new Date();
+	addHistory( i, d, "Alert Missed", point);
+}
 function clearEvent()
 {	  console.log("clearEvent()");
 
@@ -134,7 +156,13 @@ function clearEvent()
 		s[alertIndex].e_stat = "S_DEACTIVATED";
 	
 	var point = (5 * priorityModifier(s[alertIndex].e_priority));
-	s[alertIndex].e_value += point;
+	point = s[alertIndex].e_value + point;
+	if(point >= 100)
+		s[alertIndex].e_value = 100;
+	else if(point <= -100)
+		s[alertIndex].e_value = -100;
+	else 
+		s[alertIndex].e_value = point;
 	updateSTORE( s );
 	
 	
@@ -153,14 +181,20 @@ function earlyEvent( i )
 	s[i].e_stat = "S_DEACTIVATED";
 	
 	var point = (10 * priorityModifier(s[i].e_priority) );
-	s[i].e_value += point;
+	point = s[i].e_value + point;
+	if(point >= 100)
+		s[i].e_value = 100;
+	else if(point <= -100)
+		s[i].e_value = -100;
+	else 
+		s[i].e_value = point;
 	updateSTORE( s );
 	
 	var d = new Date();
 	addHistory( i, d, "Early Finish", point);
 }
 
-function addHistory( i, date,  log, value ) //uses index
+function addHistory( i, date,  log, value ) 
 {	  console.log("addHistory()");
 	var s = retriveSTORE();
 	
